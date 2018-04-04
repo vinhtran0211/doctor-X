@@ -3,7 +3,7 @@
     package="com.vinh.doctor_x">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -14,11 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Login_Activity"
-            android:theme="@style/AppTheme.Dark">
-        </activity>
-        <activity android:name=".FirstSetAcc_Activity" android:theme="@style/AppTheme.Dark">
-
-        </activity>
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".SignUp_Activity"
             android:theme="@style/AppTheme.Dark">
@@ -29,12 +25,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
-
+        <activity android:name=".MainActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".Main_Screen_Acitivity"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

@@ -88,6 +88,19 @@
                 android:hint="Password"/>
         </android.support.design.widget.TextInputLayout>
 
+        <!-- Password Re-enter Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_reEnterPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="Re-enter Password"/>
+        </android.support.design.widget.TextInputLayout>
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -111,32 +124,14 @@
                     android:text="Doctor"/>
             </RadioGroup>
         </LinearLayout>
-
-
-
-
-        <!-- Password Re-enter Label -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_reEnterPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="Re-enter Password"/>
-        </android.support.design.widget.TextInputLayout>
-
-
-        <fragment
+        <FrameLayout
             android:id="@+id/frg_frisetup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.vinh.doctor_x.Fragment.Frg_firset"
             >
 
-        </fragment>
+        </FrameLayout>
+
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_signup"
@@ -154,6 +149,7 @@
             android:text="Already a member? Login"
             android:gravity="center"
             android:textSize="16dip"/>
+
 
     </LinearLayout>
 </ScrollView>

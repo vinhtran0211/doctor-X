@@ -134,7 +134,7 @@ public class Login_Activity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Disable going back to the MainActivity
+        // Disable going back to the maina
         moveTaskToBack(true);
     }
 
@@ -185,10 +185,6 @@ public class Login_Activity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-
-                                Intent intent = new Intent(Login_Activity.this, MainActivity.class);
-                                startActivity(intent);
 
                         } else {
                             Toast.makeText(Login_Activity.this, "Dang nhap that bai", Toast.LENGTH_SHORT).show();

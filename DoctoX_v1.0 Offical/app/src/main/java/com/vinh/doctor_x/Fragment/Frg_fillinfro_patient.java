@@ -25,7 +25,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.vinh.doctor_x.FirstSetAcc_Activity;
 import com.vinh.doctor_x.R;
 import com.vinh.doctor_x.SignUp_Activity;
 

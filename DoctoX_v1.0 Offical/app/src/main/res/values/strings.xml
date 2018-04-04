@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Doctor-X</string>
 
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="key_API_map">AIzaSyB0pIyuLiBYNSzFIC_MIO7NSWzF5PFgTO4</string>
 </resources>
