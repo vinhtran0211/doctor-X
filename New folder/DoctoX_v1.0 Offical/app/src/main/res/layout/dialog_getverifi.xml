@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white"
+   >
+
+    <com.vinh.doctor_x.test.inputpin
+        android:id="@+id/txt_pin_entry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:cursorVisible="false"
+        android:digits="1234567890"
+        android:inputType="number"
+        android:maxLength="6"
+        android:textIsSelectable="false"
+        android:textSize="20sp"
+        android:layout_margin="10dp"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:background="@color/primary_darker"
+        android:id="@+id/btn_login1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+
+        android:padding="12dp"
+        android:textColor="@color/accent"
+        android:text="Login"/>
+</LinearLayout>
