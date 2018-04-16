@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">847282226008-nuaiooos1o0mehggj6092tg620fmegp0.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://doctor-x-bc921.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">847282226008</string>
+    <string name="google_api_key" translatable="false">AIzaSyBDVxDSfgwxc-qh9D_lhmB0rTl6IzJRV9c</string>
+    <string name="google_app_id" translatable="false">1:847282226008:android:ad27d2d55a8d7170</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBDVxDSfgwxc-qh9D_lhmB0rTl6IzJRV9c</string>
+    <string name="google_storage_bucket" translatable="false">doctor-x-bc921.appspot.com</string>
+    <string name="project_id" translatable="false">doctor-x-bc921</string>
+</resources>
