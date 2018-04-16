@@ -7,7 +7,7 @@
     android:background="@color/white"
    >
 
-    <com.vinh.doctor_x.test.inputpin
+    <com.vinh.doctor_x.inputpin
         android:id="@+id/txt_pin_entry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
