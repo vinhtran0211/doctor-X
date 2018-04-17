@@ -71,8 +71,13 @@ public final class R {
         public static final int common_google_signin_btn_text_light_focused = 0x7f07006d;
         public static final int common_google_signin_btn_text_light_normal = 0x7f07006e;
         public static final int common_google_signin_btn_text_light_normal_background = 0x7f07006f;
+<<<<<<< HEAD
+        public static final int googleg_disabled_color_18 = 0x7f07007b;
+        public static final int googleg_standard_color_18 = 0x7f07007c;
+=======
         public static final int googleg_disabled_color_18 = 0x7f07007a;
         public static final int googleg_standard_color_18 = 0x7f07007b;
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
     }
     public static final class id {
         public static final int adjust_height = 0x7f08001b;
@@ -85,6 +90,17 @@ public final class R {
         public static final int light = 0x7f08006e;
         public static final int none = 0x7f080082;
         public static final int normal = 0x7f080083;
+<<<<<<< HEAD
+        public static final int progressBar = 0x7f08008d;
+        public static final int radio = 0x7f080090;
+        public static final int satellite = 0x7f08009b;
+        public static final int standard = 0x7f0800c0;
+        public static final int terrain = 0x7f0800c6;
+        public static final int text = 0x7f0800c7;
+        public static final int text2 = 0x7f0800c8;
+        public static final int wide = 0x7f0800e7;
+        public static final int wrap_content = 0x7f0800ea;
+=======
         public static final int radio = 0x7f08008f;
         public static final int satellite = 0x7f08009a;
         public static final int standard = 0x7f0800bf;
@@ -93,6 +109,7 @@ public final class R {
         public static final int text2 = 0x7f0800c7;
         public static final int wide = 0x7f0800e5;
         public static final int wrap_content = 0x7f0800e8;
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
     }
     public static final class integer {
         public static final int google_play_services_version = 0x7f090007;

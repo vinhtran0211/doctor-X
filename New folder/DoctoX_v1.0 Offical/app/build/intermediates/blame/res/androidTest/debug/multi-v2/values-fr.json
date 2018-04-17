@@ -1,10 +1,17 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
+            "outputFile": "C:\\Users\\HP pro 450\\Desktop\\DoctoX_v1.0 Offical\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-fr\\values-fr.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-11.0.4.aar\\551cb8e209dee2b4fcfacc8749eba5f6\\res\\values-fr\\values.xml",
+=======
             "outputFile": "/Users/nntd290897/Documents/GitHub/doctor-X/New folder/DoctoX_v1.0 Offical/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-fr/values-fr.xml",
             "map": [
                 {
                     "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/play-services-base-11.0.4.aar/66aa90a453abbc8bae156fd0b9a24ec4/res/values-fr/values.xml",
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -21,7 +28,11 @@
                     }
                 },
                 {
+<<<<<<< HEAD
+                    "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-11.0.4.aar\\2209c950d6b8159cde65cfc9d35c5562\\res\\values-fr\\values.xml",
+=======
                     "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/play-services-basement-11.0.4.aar/9db4ea4b08e652e7795fd3b09cb5f9e2/res/values-fr/values.xml",
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -38,7 +49,11 @@
                     }
                 },
                 {
+<<<<<<< HEAD
+                    "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\7c0b7862f6232c7892ae43f8a82f544a\\res\\values-fr\\values-fr.xml",
+=======
                     "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/afce83aaa54a622576f4797fe6d01575/res/values-fr/values-fr.xml",
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

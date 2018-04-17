@@ -1,10 +1,17 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
+            "outputFile": "C:\\Users\\HP pro 450\\Desktop\\DoctoX_v1.0 Offical\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-v23\\values-v23.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\7c0b7862f6232c7892ae43f8a82f544a\\res\\values-v23\\values-v23.xml",
+=======
             "outputFile": "/Users/nntd290897/Documents/GitHub/doctor-X/New folder/DoctoX_v1.0 Offical/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-v23/values-v23.xml",
             "map": [
                 {
                     "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/afce83aaa54a622576f4797fe6d01575/res/values-v23/values-v23.xml",
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     "from": {
                         "startLines": "2,3,4,5,6,19,32,33,34,35,36",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
@@ -15,7 +22,11 @@
                     }
                 },
                 {
+<<<<<<< HEAD
+                    "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\cardview-v7-26.1.0.aar\\e9c23d1cf6811a511fe7ee44ca17bce1\\res\\values-v23\\values-v23.xml",
+=======
                     "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/cardview-v7-26.1.0.aar/d6bad59e04dee884e2425379d087bd6d/res/values-v23/values-v23.xml",
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

@@ -1,6 +1,12 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
+            "outputFile": "C:\\Users\\HP pro 450\\Desktop\\DoctoX_v1.0 Offical\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-sw600dp-v13\\values-sw600dp-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\design-26.1.0.aar\\48d87e1d8b22e6633844136dd4e0621c\\res\\values-sw600dp-v13\\values-sw600dp-v13.xml",
+=======
             "outputFile": "/Users/nntd290897/Documents/GitHub/doctor-X/New folder/DoctoX_v1.0 Offical/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-sw600dp-v13/values-sw600dp-v13.xml",
             "map": [
                 {
@@ -15,6 +21,7 @@
                 },
                 {
                     "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/2f642451c659264c9d8473f3080d4d95/res/values-sw600dp-v13/values-sw600dp-v13.xml",
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -31,6 +38,19 @@
                         "endColumns": "59,69,70,71,57,57,105,63,62,12",
                         "endOffsets": "666,736,807,879,937,995,1101,1165,1228,1410"
                     }
+<<<<<<< HEAD
+                },
+                {
+                    "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\7c0b7862f6232c7892ae43f8a82f544a\\res\\values-sw600dp-v13\\values-sw600dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,124,193,263,337,413,472,543",
+                        "endColumns": "68,68,69,73,75,58,70,67",
+                        "endOffsets": "119,188,258,332,408,467,538,606"
+                    }
+=======
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                 }
             ]
         }
