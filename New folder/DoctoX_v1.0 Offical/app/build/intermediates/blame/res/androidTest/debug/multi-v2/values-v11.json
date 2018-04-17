@@ -1,10 +1,17 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "C:\\Users\\HP pro 450\\Desktop\\DoctoX_v1.0 Offical\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-v11\\values-v11.xml",
             "map": [
                 {
                     "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\7c0b7862f6232c7892ae43f8a82f544a\\res\\values-v11\\values-v11.xml",
+=======
+            "outputFile": "/Users/nntd290897/Documents/GitHub/doctor-X/New folder/DoctoX_v1.0 Offical/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-v11/values-v11.xml",
+            "map": [
+                {
+                    "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/afce83aaa54a622576f4797fe6d01575/res/values-v11/values-v11.xml",
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     "from": {
                         "startLines": "2,8,14,20,26,32,38,39,43,47,48,52,56,57,61,66,71,76,78,80,81,82,136,191",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

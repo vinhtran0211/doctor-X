@@ -1,10 +1,17 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "C:\\Users\\HP pro 450\\Desktop\\DoctoX_v1.0 Offical\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-land\\values-land.xml",
             "map": [
                 {
                     "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\7c0b7862f6232c7892ae43f8a82f544a\\res\\values-land\\values-land.xml",
+=======
+            "outputFile": "/Users/nntd290897/Documents/GitHub/doctor-X/New folder/DoctoX_v1.0 Offical/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-land/values-land.xml",
+            "map": [
+                {
+                    "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/afce83aaa54a622576f4797fe6d01575/res/values-land/values-land.xml",
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
@@ -14,7 +21,11 @@
                     }
                 },
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\design-26.1.0.aar\\48d87e1d8b22e6633844136dd4e0621c\\res\\values-land\\values-land.xml",
+=======
+                    "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/2f642451c659264c9d8473f3080d4d95/res/values-land/values-land.xml",
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

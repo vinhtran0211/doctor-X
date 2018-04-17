@@ -1,6 +1,7 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "C:\\Users\\HP pro 450\\Desktop\\DoctoX_v1.0 Offical\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
             "map": [
                 {
@@ -31,6 +32,57 @@
                         "endLines": "11,36",
                         "endColumns": "12,12",
                         "endOffsets": "634,1936"
+=======
+            "outputFile": "/Users/nntd290897/Documents/GitHub/doctor-X/New folder/DoctoX_v1.0 Offical/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v21/values-v21.xml",
+            "map": [
+                {
+                    "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/7d536b51e525c1ab4a5f550eeebe3804/res/values-v21/values-v21.xml",
+                    "from": {
+                        "startLines": "2,5,8,11",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,223,386,554",
+                        "endLines": "4,7,10,13",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "218,381,549,716"
+                    },
+                    "to": {
+                        "startLines": "318,321,325,329",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "22849,23017,23306,23602",
+                        "endLines": "320,323,327,331",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "23012,23175,23469,23764"
+                    }
+                },
+                {
+                    "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/76d0ba6844eda777f26f67ab629af0b8/res/values-v21/values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,596,722,850,1022",
+                        "endLines": "2,3,4,5,6,7,8,9,12,17",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,717,845,1017,1355"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,316,317,324,328,332,335",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,22607,22723,23180,23474,23769,23941",
+                        "endLines": "2,3,4,5,316,317,324,328,334,339",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,22718,22844,23301,23597,23936,24274"
+                    }
+                },
+                {
+                    "source": "/Users/nntd290897/Documents/GitHub/doctor-X/New folder/DoctoX_v1.0 Offical/app/src/main/res/values-v21/styles.xml",
+                    "from": {
+                        "startLines": "3,13",
+                        "startColumns": "4,4",
+                        "startOffsets": "56,629",
+                        "endLines": "11,36",
+                        "endColumns": "12,12",
+                        "endOffsets": "623,1900"
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     },
                     "to": {
                         "startLines": "6,15",
@@ -42,6 +94,7 @@
                     }
                 },
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-26.1.0.aar\\8ff801f560342dedd0c79b0c8b07a928\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,5,8,11",
@@ -62,6 +115,28 @@
                 },
                 {
                     "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\7c0b7862f6232c7892ae43f8a82f544a\\res\\values-v21\\values-v21.xml",
+=======
+                    "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/2f642451c659264c9d8473f3080d4d95/res/values-v21/values-v21.xml",
+                    "from": {
+                        "startLines": "2,5",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,266",
+                        "endLines": "4,5",
+                        "endColumns": "12,96",
+                        "endOffsets": "261,358"
+                    },
+                    "to": {
+                        "startLines": "197,261",
+                        "startColumns": "4,4",
+                        "startOffsets": "14425,18975",
+                        "endLines": "199,261",
+                        "endColumns": "12,96",
+                        "endOffsets": "14631,19067"
+                    }
+                },
+                {
+                    "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/afce83aaa54a622576f4797fe6d01575/res/values-v21/values-v21.xml",
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,19,20,21,22,24,26,27,28,29,30,32,34,36,38,40,42,43,48,50,52,53,54,56,58,59,60,61,62,63,107,110,154,157,160,162,164,166,169,171,174,175,176,179,180,181,182,183,184,187,188,190,192,194,196,200,202,203,204,205,207,211,213,215,216,217,218,219,221,222,223,233,234,235,247,259,260,261,264,267,268,271,272",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -78,6 +153,7 @@
                         "endColumns": "90,102,102,104,106,108,108,108,108,108,106,102,118,12,12,104,120,100,12,12,102,118,106,102,12,12,12,12,12,12,118,12,12,12,111,146,12,12,74,88,86,100,102,12,12,12,12,12,12,12,12,12,12,12,88,110,12,100,94,122,128,116,12,98,12,12,12,12,12,12,92,110,55,12,12,12,12,94,90,90,116,12,70,82,12,56,57,12,12,118,128,12,12,128,12,130,12",
                         "endOffsets": "2288,2391,2494,2599,2706,2815,2924,3033,3142,3251,3358,3461,3580,3735,3890,3995,4116,4217,4364,4505,4608,4727,4834,4937,5092,5263,5412,5577,5734,5885,6004,6376,6525,6674,6786,6933,7086,7233,7308,7397,7484,7585,7688,10756,10942,14022,14220,14420,14754,14877,14990,15173,15304,15505,15594,15705,15938,16039,16134,16257,16386,16503,16680,16779,16914,17057,17192,17311,17512,17631,17724,17835,17891,17998,18193,18304,18437,18532,18623,18714,18831,18970,19138,19221,19901,19958,20016,20710,21416,21535,21664,21835,22001,22130,22301,22432,22602"
                     }
+<<<<<<< HEAD
                 },
                 {
                     "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\679aaaef08cc596d7e8914a555f6a391\\res\\values-v21\\values-v21.xml",
@@ -97,6 +173,8 @@
                         "endColumns": "103,63,66,63,115,125,125,127,12,12",
                         "endOffsets": "154,218,285,349,22718,22844,23301,23597,23936,24274"
                     }
+=======
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                 }
             ]
         }

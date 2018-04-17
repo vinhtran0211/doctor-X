@@ -1,10 +1,27 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "C:\\Users\\HP pro 450\\Desktop\\DoctoX_v1.0 Offical\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-v16\\values-v16.xml",
             "map": [
                 {
                     "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\7c0b7862f6232c7892ae43f8a82f544a\\res\\values-v16\\values-v16.xml",
+=======
+            "outputFile": "/Users/nntd290897/Documents/GitHub/doctor-X/New folder/DoctoX_v1.0 Offical/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/76d0ba6844eda777f26f67ab629af0b8/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                },
+                {
+                    "source": "/Users/nntd290897/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/afce83aaa54a622576f4797fe6d01575/res/values-v16/values-v16.xml",
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,6 +38,7 @@
                         "endColumns": "12",
                         "endOffsets": "289"
                     }
+<<<<<<< HEAD
                 },
                 {
                     "source": "C:\\Users\\HP pro 450\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\679aaaef08cc596d7e8914a555f6a391\\res\\values-v16\\values-v16.xml",
@@ -31,6 +49,8 @@
                         "endColumns": "65",
                         "endOffsets": "116"
                     }
+=======
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
                 }
             ]
         }

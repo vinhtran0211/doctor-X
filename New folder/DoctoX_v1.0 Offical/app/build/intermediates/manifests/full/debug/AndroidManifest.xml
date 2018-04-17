@@ -54,14 +54,23 @@
         <activity
             android:name="com.vinh.doctor_x.Main_Screen_Acitivity"
             android:theme="@style/AppTheme.Dark" />
+<<<<<<< HEAD
         <activity android:name="com.vinh.doctor_x.screen" >
+=======
+        <activity
+            android:name="com.vinh.doctor_x.screen"
+            android:theme="@style/AppTheme.Dark" >
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity android:name="com.vinh.doctor_x.Check_user_screen" />
+=======
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
 
         <meta-data
             android:name="android.support.VERSION"

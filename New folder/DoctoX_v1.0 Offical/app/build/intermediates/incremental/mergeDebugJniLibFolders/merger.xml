@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <merger version="3"><dataSet config="main"><source path="C:\Users\HP pro 450\Desktop\DoctoX_v1.0 Offical\app\src\main\jniLibs"/></dataSet><dataSet config="debug"><source path="C:\Users\HP pro 450\Desktop\DoctoX_v1.0 Offical\app\src\debug\jniLibs"/></dataSet></merger>
+=======
+<merger version="3"><dataSet config="main"><source path="/Users/nntd290897/Documents/GitHub/doctor-X/New folder/DoctoX_v1.0 Offical/app/src/main/jniLibs"/></dataSet><dataSet config="debug"><source path="/Users/nntd290897/Documents/GitHub/doctor-X/New folder/DoctoX_v1.0 Offical/app/src/debug/jniLibs"/></dataSet></merger>
+>>>>>>> cfddd13ba335cbf3b7d881012b908a6adfed60aa
