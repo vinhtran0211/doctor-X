@@ -20,6 +20,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,7 +29,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vinh.doctor_x.Main_Screen_Acitivity;
-import com.vinh.doctor_x.Main_doctor;
 import com.vinh.doctor_x.R;
 import com.vinh.doctor_x.SignUp_Activity;
 import com.vinh.doctor_x.User.Doctor_class;
@@ -37,8 +38,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import butterknife.BindView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -62,15 +61,22 @@ public class Frg_fillinfro_doctor extends Fragment {
     private FirebaseAuth.AuthStateListener firebaseauthlistener;
 
 
-    @BindView(R.id.input_name)
     EditText _nameText;
-    @BindView(R.id.input_address) EditText _addressText;
-    @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_mobile) EditText _mobileText;
-    @BindView(R.id.input_password) EditText _passwordText;
-    @BindView(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
+    EditText _addressText;
+    EditText _emailText;
+    EditText _mobileText;
+    EditText _doctorcode;
+    EditText _DOB;
+    EditText _workingat;
+    EditText _workinghour;
+    RadioButton rdb_man ;
+    RadioButton rdb_women ;
+    RadioGroup rdg_chooseType ;
+    String gender;
+    String specialist;
+
+
     Button _signupButton;
-    @BindView(R.id.link_login) TextView _loginLink;
     private static final String TAG = "my_log";
     ImageButton img_ava_patient;
     String [] values =
@@ -140,6 +146,36 @@ public class Frg_fillinfro_doctor extends Fragment {
 
         spn_specialist = (Spinner)view.findViewById(R.id.spn_specialist);
         _signupButton = (Button) view.findViewById(R.id.btn_signup);
+        _nameText = (EditText) view.findViewById(R.id.input_name);
+        _addressText= (EditText) view.findViewById(R.id.input_address);;
+        _emailText= (EditText) view.findViewById(R.id.input_email);;
+        _mobileText= (EditText) view.findViewById(R.id.input_mobile);;
+        _doctorcode= (EditText) view.findViewById(R.id.txt_doctorCode);;
+        _DOB= (EditText) view.findViewById(R.id.input_DOB);;
+        _workingat= (EditText) view.findViewById(R.id.txt_workat);;
+        _workinghour= (EditText) view.findViewById(R.id.txt_WorkingHour);;
+
+
+        rdg_chooseType = (RadioGroup)view.findViewById(R.id.rdg_Gender);
+        rdb_man = (RadioButton)view.findViewById(R.id.rdb_man);
+        rdb_women = (RadioButton)view.findViewById(R.id.rdb_woman);
+
+
+
+        rdg_chooseType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+                if(rdb_man.isChecked())
+                {
+                    gender = "man";
+                }
+                else if(rdb_women.isChecked())
+                {
+                    gender = "woman";
+                }
+            }
+        });
 
         final List<String> speciallist = new ArrayList<>(Arrays.asList(values));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -189,6 +225,7 @@ public class Frg_fillinfro_doctor extends Fragment {
         btn_takeaphoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 profilepictureOnClick();
             }
         });
@@ -206,8 +243,16 @@ public class Frg_fillinfro_doctor extends Fragment {
                 String key =  mAuth.getCurrentUser().getUid();
                 Doctor_class drv =new Doctor_class();
                 drv.setAvatar(convertToBase64(thumbnail));
-                drv.setName("vvvv");
+                drv.setName(_nameText.getText().toString());
                 drv.setType("1");
+                drv.setAddress(_addressText.getText().toString());
+                drv.setCode(_doctorcode.getText().toString());
+                drv.setDOB(_DOB.getText().toString());
+                drv.setPhone(_mobileText.getText().toString());
+                drv.setSpecialist(specialist);
+                drv.setWorkat(_workingat.getText().toString());
+                drv.setWorkinghour(_workinghour.getText().toString());
+                drv.setGender(gender);
                 reference.child("doctor").child(key).setValue(drv);
                 Intent intent = new Intent(getActivity(),Main_Screen_Acitivity.class);
                 Bundle bundle = new Bundle();

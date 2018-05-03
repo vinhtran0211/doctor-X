@@ -24,15 +24,13 @@ import android.widget.RadioGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.vinh.doctor_x.Main_Patient;
+import com.vinh.doctor_x.Main_Screen_Acitivity;
 import com.vinh.doctor_x.R;
 import com.vinh.doctor_x.SignUp_Activity;
 import com.vinh.doctor_x.User.Patient_class;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-
-import butterknife.BindView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -55,13 +53,14 @@ public class Frg_fillinfro_patient extends Fragment {
     final int CROP_PIC = 2;
     private Uri picUri;
 
-    @BindView(R.id.input_name)
     EditText _nameText;
-    @BindView(R.id.input_address) EditText _addressText;
-    @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_mobile) EditText _mobileText;
-    @BindView(R.id.input_password) EditText _passwordText;
-    @BindView(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
+    EditText _addressText;
+    EditText _emailText;
+    EditText _mobileText;
+
+    EditText _DOB;
+
+
     Button _signupButton;
     RadioButton rdb_man ;
     RadioButton rdb_woman ;
@@ -118,6 +117,17 @@ public class Frg_fillinfro_patient extends Fragment {
         rdb_woman = (RadioButton)view.findViewById(R.id.rdb_woman);
 
 
+
+        _signupButton = (Button) view.findViewById(R.id.btn_signup);
+        _nameText = (EditText) view.findViewById(R.id.input_name);
+        _addressText= (EditText) view.findViewById(R.id.input_address);;
+        _emailText= (EditText) view.findViewById(R.id.input_email);;
+        _mobileText= (EditText) view.findViewById(R.id.input_mobile);;
+
+        _DOB= (EditText) view.findViewById(R.id.input_DOB);;
+
+
+
         rdg_chooseType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -138,12 +148,19 @@ public class Frg_fillinfro_patient extends Fragment {
                 String key =  mAuth.getCurrentUser().getUid();
                 Patient_class drv =new Patient_class();
                 drv.setAvatar(convertToBase64(thumbnail));
-                drv.setName("vvvv");
+                drv.setName(_nameText.getText().toString());
+                drv.setGender(gender);
+                drv.setBirthday(_DOB.getText().toString());
+                drv.setPhone(_mobileText.getText().toString());
+                drv.setEmail(_emailText.getText().toString());
+                drv.setAddress(_addressText.getText().toString());
+
                 drv.setType("1");
                 reference.child("patient").child(key).setValue(drv);
-
-                Intent intent = new Intent(getActivity(),Main_Patient.class);
-
+                Intent intent = new Intent(getActivity(),Main_Screen_Acitivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("type",1);
+                intent.putExtra("gettype",bundle);
                 startActivity(intent);
             }
         });
