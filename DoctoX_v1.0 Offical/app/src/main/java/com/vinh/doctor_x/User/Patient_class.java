@@ -23,7 +23,7 @@ public class Patient_class {
     }
 
     public String type;
-    public int gender;
+    public String gender;
 
     public String getName() {
         return name;
@@ -81,11 +81,11 @@ public class Patient_class {
         this.birthday = birthday;
     }
 
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -100,7 +100,7 @@ public class Patient_class {
     public Patient_class() {
     }
 
-    public Patient_class(String name, String email, String phone, String medicalFiles, String status, String address, String birthday, String avatar, String type, int gender) {
+    public Patient_class(String name, String email, String phone, String medicalFiles, String status, String address, String birthday, String avatar, String type, String gender) {
 
         this.name = name;
         this.email = email;
