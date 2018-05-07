@@ -5,17 +5,24 @@ package com.vinh.doctor_x.User;
  */
 
 public class Doctor_class {
-    String name;
-    String avatar;
-    String type;
-    String address;
-    String email;
-    String phone;
-    String DOB;
-    String workat;
-    String workinghour;
-    String code;
-    String specialist;
+    private String name,avatar,type,address,email,phone,DOB,workat,workinghour,code,specialist;
+    Double lat,log;
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLog() {
+        return log;
+    }
+
+    public void setLog(Double log) {
+        this.log = log;
+    }
 
     public String getGender() {
         return gender;
@@ -119,7 +126,7 @@ public class Doctor_class {
         this.type = type;
     }
 
-    public Doctor_class(String name, String avatar, String type, String address, String email, String phone, String DOB, String workat, String workinghour, String code, String specialist) {
+    public Doctor_class(String name, String avatar, String type, String address, String email, String phone, String DOB, String workat, String workinghour, String code, String specialist, Double lat, Double log, String gender) {
         this.name = name;
         this.avatar = avatar;
         this.type = type;
@@ -131,5 +138,10 @@ public class Doctor_class {
         this.workinghour = workinghour;
         this.code = code;
         this.specialist = specialist;
+        this.lat = lat;
+        this.log = log;
+        this.gender = gender;
     }
+
+
 }

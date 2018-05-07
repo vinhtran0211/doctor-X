@@ -47,8 +47,7 @@ public class Frg_main_doctor extends Fragment {
 
                 Frg_Map_Doctor fragment = new Frg_Map_Doctor();
                 fragmentTransaction.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out);
-                fragmentTransaction.replace(R.id.frg_patient_main, fragment);
-                //fragmentTransaction.replace(R.id.frg_patient_main, map);
+                fragmentTransaction.replace(R.id.frg_frisetup, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

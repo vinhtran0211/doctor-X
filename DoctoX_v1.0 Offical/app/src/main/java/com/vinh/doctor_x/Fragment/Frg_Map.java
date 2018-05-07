@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -72,6 +73,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static android.os.SystemClock.sleep;
+
 /**
  * Created by nntd290897 on 4/12/18.
  */
@@ -99,7 +102,7 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
-    private ProgressDialog progressDialog ,progress_waiting;
+    public ProgressDialog progressDialog;
     private Button btn_findpath,btn_getit_frg_map;
     private LinearLayout lnl_findpath ;
     private Dialog dialog_findpath;
@@ -114,35 +117,45 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
     private double lat_object,log_object;
     private FragmentManager manager;
     private FragmentTransaction fragmentTransaction = null;
-
+    protected boolean _active = true;
+    protected int _splashTime = 5000;
 
     private void writeLocation(){
-        Location_cr location_cr1 = new Location_cr(10.845539, 106.765556,"Diem 1","Thu duc");
-        Location_cr location_cr2 = new Location_cr(10.862619, 106.760842,"Diem 2","Thu duc");
-        Location_cr location_cr3 = new Location_cr(10.859711, 106.748182,"Diem 3","Thu duc");
+       // Location_cr location_cr1 = new Location_cr(10.845539, 106.765556,"Diem 1","Thu duc");
+        //Location_cr location_cr2 = new Location_cr(10.862619, 106.760842,"Diem 2","Thu duc");
+        //Location_cr location_cr3 = new Location_cr(10.859711, 106.748182,"Diem 3","Thu duc");
 
-        String key = myRef.child("loglat_current").push().getKey();
-        myRef.child("loglat_current").child(key).setValue(location_cr1);
+      //  String key = myRef.child("loglat_current").push().getKey();
+       // myRef.child("loglat_current").child(key).setValue(location_cr1);
 
-        String key1 = myRef.child("loglat_current").push().getKey();
-        myRef.child("loglat_current").child(key1).setValue(location_cr2);
+       // String key1 = myRef.child("loglat_current").push().getKey();
+      //  myRef.child("loglat_current").child(key1).setValue(location_cr2);
 
-        String key2 = myRef.child("loglat_current").push().getKey();
-        myRef.child("loglat_current").child(key2).setValue(location_cr3);
+       // String key2 = myRef.child("loglat_current").push().getKey();
+       // myRef.child("loglat_current").child(key2).setValue(location_cr3);
     }
 
     private void sentrequest(String namepatient, String namedoctor){
-        progressDialog = ProgressDialog.show(getContext(), "Please wait.",
-                "Connecting....!", true);
+
         //String key2 = myRef.child("request_zone").push().getKey();
         myRef.child("request_zone").child(namepatient+"_"+namedoctor).setValue("0");
 
 
     }
 
+
+    public void startdistancenow(String k){
+       Log.i("checkacti_st",k);
+     //   progressDialog.dismiss();
+        distance(mCurrLocationMarker.getPosition().latitude,mCurrLocationMarker.getPosition().longitude);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        Context mContext = getActivity() ;
+        progressDialog = new ProgressDialog(mContext);
         view = inflater.inflate(R.layout.frg_map,container,false);
         txt_getlocationcurrent = (EditText)view.findViewById(R.id.txt_locationcurrent);
         btn_getit_frg_map = (Button)view.findViewById(R.id.btn_getit_frg_map);
@@ -173,9 +186,6 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
                 }
             }
         });
-
-
-
         dialog_findpath = new Dialog(view.getContext());
         dialog_findpath.setContentView(R.layout.dialog_findpath);
         dialog_findpath.setTitle("Choose Yours Location");
@@ -225,27 +235,7 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
         });
         setupmapifneed();
         //myRef.child("request_zone").child("abc").setValue("1");
-        myRef.child("request_zone").child("abc").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String status = dataSnapshot.getValue(String.class);
-             //   Log.i("abc",status);
-                Toast.makeText(getContext(), status, Toast.LENGTH_LONG).show();
-                //progressDialog.dismiss();
-                //distance(mCurrLocationMarker.getPosition().latitude,mCurrLocationMarker.getPosition().longitude);
-//                Log.i("checkacti",status);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         return view;
-    }
-    public void showkey(String k){
-        Log.i("abc",k);
-        Toast.makeText(getContext(), k, Toast.LENGTH_LONG).show();
     }
 
 
@@ -268,8 +258,8 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
                 Marker marker;
                 BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.markerdoctor);
                 options.position(new LatLng(location_cr.getLat(),location_cr.getLog()));
-                options.title(location_cr.getTitle());
-                options.snippet(location_cr.getCity());
+                options.title(location_cr.getName());
+                options.snippet(location_cr.getMobile());
                 options.icon(icon);
                 marker = mGoogleMap.addMarker(options);
                 //mGoogleMap.addMarker(options);
@@ -296,54 +286,58 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
 
             }
         });
-
-
-
         Log.i("Showmarker",locations.size()+"");
         for (Location_cr location : locations) {
-
         }
-
-
            //Location_cr location1 = new Location_cr(10.357264,106.223163,"diem2","ben tre");
           //  Location_cr location2 = new Location_cr(10.331439,106.037153,"diem1","ca mau");
           //  locations.add(location1);
            // locations.add(location2);
             //ArrayList<LatLng> latLngArrayList = new ArrayList<>();
-
     }
 
 
     public void distance(Double lat,Double log) {
-        Toast.makeText(getContext(), "" + ((Main_Screen_Acitivity) getActivity()).getCheckBtnSearch(), Toast.LENGTH_SHORT).show();
-        if (((Main_Screen_Acitivity) getActivity()).getCheckBtnSearch()) {
-            ((Main_Screen_Acitivity) getActivity()).setCheckBtnSearch(false);
-            final ArrayList<Integer> arrayList = new ArrayList<Integer>();
-            int smallest = -1;
-            for (int i = 0; i < locations.size(); i++) {
-                //BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.patient_marker);
-                //MarkerOptions markerOption = new MarkerOptions();
-                //markerOption.position(new LatLng(locations.get(i).getLat(), locations.get(i).getLog())).icon(icon).title(locations.get(i).getTitle());
-                //marker = mGoogleMap.addMarker(markerOption);
-                float[] results = new float[3];
-                Location.distanceBetween(locations.get(i).getLat(), locations.get(i).getLog(),
-                        mCurrLocationMarker.getPosition().latitude, mCurrLocationMarker.getPosition().longitude, results);
+
+       // progressDialog = ProgressDialog.show(getContext(), "Please wait.",
+        //        "Connecting....!", true);
+        //int waited = 0;
+        //while (_active && (waited < _splashTime)) {
+        //    sleep(100);
+        //    if (_active) {
+        //        waited += 100;
+        //    }
+       // }
+        progressDialog.dismiss();
+
+        Log.i("checkacti-distance-now",progressDialog.isShowing()+"");
+//        Toast.makeText(getContext(), "" + ((Main_Screen_Acitivity) getActivity()).getCheckBtnSearch(), Toast.LENGTH_SHORT).show();
+        final ArrayList<Integer> arrayList = new ArrayList<Integer>();
+        int smallest = -1;
+        for (int i = 0; i < locations.size(); i++) {
+            //BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.patient_marker);
+            //MarkerOptions markerOption = new MarkerOptions();
+            //markerOption.position(new LatLng(locations.get(i).getLat(), locations.get(i).getLog())).icon(icon).title(locations.get(i).getTitle());
+            //marker = mGoogleMap.addMarker(markerOption);
+            float[] results = new float[3];
+            Location.distanceBetween(locations.get(i).getLat(), locations.get(i).getLog(),
+                    mCurrLocationMarker.getPosition().latitude, mCurrLocationMarker.getPosition().longitude, results);
                /* Toast.makeText(getContext(), "Distance is: " + results[0], Toast.LENGTH_SHORT).show();
                 Log.d("Distance",results[0]+"");
                 txt_getlocationcurrent.setText(results[0]+"");
                 System.out.println("Distance is: " + results[0]);*/
-                if (smallestDistance == -1 || results[0] < smallestDistance) {
-                    smallestDistance = results[0];
-                    smallest = i;
-                }
-                Log.i("Distance", results[0] + "");
-                Log.i("smallest", smallest + "");
-                arrayList.add((int) results[0]);
+            if (smallestDistance == -1 || results[0] < smallestDistance) {
+                smallestDistance = results[0];
+                smallest = i;
             }
-            Log.i("checklat", lat+ "," + log);
-            sendRequest(lat + "," +log, locations.get(smallest).getLat() + "," + locations.get(smallest).getLog());
-            // Log.i("khoangcach",CalculationByDistance(new LatLng(lat,log),new LatLng(locations.get(smallest).getLat(),locations.get(smallest).getLog()))+"");
+            Log.i("Distance", results[0] + "");
+            Log.i("smallest", smallest + "");
+            arrayList.add((int) results[0]);
         }
+        Log.i("checklat", lat+ "," + log);
+        sendRequest(lat + "," +log, locations.get(smallest).getLat() + "," + locations.get(smallest).getLog());
+        // Log.i("khoangcach",CalculationByDistance(new LatLng(lat,log),new LatLng(locations.get(smallest).getLat(),locations.get(smallest).getLog()))+"");
+        // ((Main_Screen_Acitivity) getActivity()).setCheckBtnSearch(false);
     }
 
 
@@ -451,6 +445,9 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
                 markerOption.position(latLng).icon(icon);
                 mCurrLocationMarker = googleMap.addMarker(markerOption);
                 txt_getlocationcurrent.setText(getLocationName(latLng.latitude,latLng.longitude));
+                ((Main_Screen_Acitivity)getActivity()).location_cr.setLat(latLng.latitude);
+                ((Main_Screen_Acitivity)getActivity()).location_cr.setLog(latLng.longitude);
+                ((Main_Screen_Acitivity)getActivity()).location_cr.setAddress(getLocationName(latLng.latitude,latLng.longitude));
             }
         });
 
@@ -726,8 +723,8 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
     }
     @Override
     public void onDirectionFinderStart() {
-        progressDialog = ProgressDialog.show(getContext(), "Please wait.",
-                "Finding direction..!", true);
+//        progressDialog = ProgressDialog.show(getActivity(), "Please wait.",
+               // "Finding direction..!", true);
 
         if (originMarkers != null) {
             for (Marker marker : originMarkers) {
@@ -750,7 +747,8 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
 
     @Override
     public void onDirectionFinderSuccess(List<Route> routes) {
-        progressDialog.dismiss();
+
+        //progressDialog.dismiss();
         polylinePaths = new ArrayList<>();
         originMarkers = new ArrayList<>();
         destinationMarkers = new ArrayList<>();
@@ -821,6 +819,8 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
             fragmentTransaction.replace(R.id.frg_patient_main, frg_main_patient);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+
+
         }
     }
 

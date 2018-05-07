@@ -34,6 +34,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.vinh.doctor_x.Main_Screen_Acitivity;
 import com.vinh.doctor_x.R;
 
@@ -122,6 +124,9 @@ public class Frg_bookappointment extends Fragment {
                     "51. Allergist",
 
             };
+
+    private FirebaseDatabase database= FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference();
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -276,8 +281,9 @@ public class Frg_bookappointment extends Fragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 ((Main_Screen_Acitivity)getActivity()).setCheckBtnSearch(true);
+
+               // myRef.child("request_zone").child("nguyenvana_dothanhnam").setValue("1");
                 fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 Frg_Map map = new Frg_Map();
@@ -285,6 +291,7 @@ public class Frg_bookappointment extends Fragment {
                 fragmentTransaction.replace(R.id.frg_patient_main, map);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
             }
         });
 

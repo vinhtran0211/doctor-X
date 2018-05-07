@@ -47,13 +47,13 @@
             android:exported="true"
             android:name=".Main_Screen_Acitivity"
             android:theme="@style/AppTheme" >
+
+        </activity>
+        <activity android:name=".screen" android:theme="@style/AppTheme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".screen" android:theme="@style/AppTheme.Dark">
-
         </activity>
 
 

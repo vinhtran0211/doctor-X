@@ -13,16 +13,18 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
@@ -54,18 +56,22 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.vinh.doctor_x.Main_Screen_Acitivity;
 import com.vinh.doctor_x.Modules.DirectionFinder;
 import com.vinh.doctor_x.Modules.DirectionFinderListener;
 import com.vinh.doctor_x.Modules.Route;
 import com.vinh.doctor_x.R;
+import com.vinh.doctor_x.SignUp_Activity;
 import com.vinh.doctor_x.User.Location_cr;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by nntd290897 on 4/12/18.
@@ -107,28 +113,38 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
     View myView,view_shortly_detail,view_cr;
     boolean isUp;
     private double lat_object,log_object;
+    private FragmentManager manager;
+    private FragmentTransaction fragmentTransaction = null;
 
 
     private void writeLocation(){
-        Location_cr location_cr1 = new Location_cr(10.845539, 106.765556,"Diem 1","Thu duc");
-        Location_cr location_cr2 = new Location_cr(10.862619, 106.760842,"Diem 2","Thu duc");
-        Location_cr location_cr3 = new Location_cr(10.859711, 106.748182,"Diem 3","Thu duc");
+        // Location_cr location_cr1 = new Location_cr(10.845539, 106.765556,"Diem 1","Thu duc");
+        //Location_cr location_cr2 = new Location_cr(10.862619, 106.760842,"Diem 2","Thu duc");
+        //Location_cr location_cr3 = new Location_cr(10.859711, 106.748182,"Diem 3","Thu duc");
 
-        String key = myRef.child("loglat_current").push().getKey();
-        myRef.child("loglat_current").child(key).setValue(location_cr1);
+        //  String key = myRef.child("loglat_current").push().getKey();
+        // myRef.child("loglat_current").child(key).setValue(location_cr1);
 
-        String key1 = myRef.child("loglat_current").push().getKey();
-        myRef.child("loglat_current").child(key1).setValue(location_cr2);
+        // String key1 = myRef.child("loglat_current").push().getKey();
+        //  myRef.child("loglat_current").child(key1).setValue(location_cr2);
 
-        String key2 = myRef.child("loglat_current").push().getKey();
-        myRef.child("loglat_current").child(key2).setValue(location_cr3);
+        // String key2 = myRef.child("loglat_current").push().getKey();
+        // myRef.child("loglat_current").child(key2).setValue(location_cr3);
+    }
+
+    private void sentrequest(String namepatient, String namedoctor){
+        progressDialog = ProgressDialog.show(getContext(), "Please wait.",
+                "Connecting....!", true);
+        //String key2 = myRef.child("request_zone").push().getKey();
+        myRef.child("request_zone").child(namepatient+"_"+namedoctor).setValue("0");
+
 
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.frg_map_doctor,container,false);
+        view = inflater.inflate(R.layout.frg_map,container,false);
         txt_getlocationcurrent = (EditText)view.findViewById(R.id.txt_locationcurrent);
         btn_getit_frg_map = (Button)view.findViewById(R.id.btn_getit_frg_map);
         writeLocation();
@@ -138,6 +154,8 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
         view_shortly_detail.setVisibility(View.INVISIBLE);
         view_cr = (View)view.findViewById(R.id.view_cr);
         view_cr.setVisibility(View.INVISIBLE);
+        manager = getActivity().getSupportFragmentManager();
+        fragmentTransaction= manager.beginTransaction();
 
         //button = (ImageButton)view.findViewById(R.id.btn_getLocation);
         //getActivity().getSupportActionBar().setTitle("Map Location Activity");
@@ -169,21 +187,27 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
             @Override
             public void onClick(View view) {
 
-               // dialog_findpath.show();
+                // dialog_findpath.show();
             }
         });
 
         btn_findpath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               //distance();
-               dialog_findpath.dismiss();
+                //distance();
+                dialog_findpath.dismiss();
             }
         });
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                manager = getActivity().getSupportFragmentManager();
+                fragmentTransaction = manager.beginTransaction();
+                Frg_bookappointment bookappointment = new Frg_bookappointment();
+                fragmentTransaction.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out);
+                fragmentTransaction.replace(R.id.frg_patient_main, bookappointment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
@@ -200,13 +224,30 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
                 swipe_3_up = !swipe_3_up;
             }
         });
-
-
-
         setupmapifneed();
+        //myRef.child("request_zone").child("abc").setValue("1");
+        myRef.child("request_zone").child("abc").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status = dataSnapshot.getValue(String.class);
+                //   Log.i("abc",status);
+                Toast.makeText(getContext(), status, Toast.LENGTH_LONG).show();
+                //progressDialog.dismiss();
+                //distance(mCurrLocationMarker.getPosition().latitude,mCurrLocationMarker.getPosition().longitude);
+//                Log.i("checkacti",status);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         return view;
     }
-
+    public void showkey(String k){
+        Log.i("abc",k);
+        Toast.makeText(getContext(), k, Toast.LENGTH_LONG).show();
+    }
 
 
     public void loadingMarkernear(){
@@ -224,11 +265,12 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
 
                 Location_cr location_cr = dataSnapshot.getValue(Location_cr.class);
                 locations.add(location_cr);
+                Log.i("checkchange",location_cr.getLat()+"");
                 Marker marker;
                 BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.markerdoctor);
                 options.position(new LatLng(location_cr.getLat(),location_cr.getLog()));
-                options.title(location_cr.getTitle());
-                options.snippet(location_cr.getCity());
+                options.title(location_cr.getName());
+                options.snippet(location_cr.getMobile());
                 options.icon(icon);
                 marker = mGoogleMap.addMarker(options);
                 //mGoogleMap.addMarker(options);
@@ -264,11 +306,11 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
         }
 
 
-           //Location_cr location1 = new Location_cr(10.357264,106.223163,"diem2","ben tre");
-          //  Location_cr location2 = new Location_cr(10.331439,106.037153,"diem1","ca mau");
-          //  locations.add(location1);
-           // locations.add(location2);
-            //ArrayList<LatLng> latLngArrayList = new ArrayList<>();
+        //Location_cr location1 = new Location_cr(10.357264,106.223163,"diem2","ben tre");
+        //  Location_cr location2 = new Location_cr(10.331439,106.037153,"diem1","ca mau");
+        //  locations.add(location1);
+        // locations.add(location2);
+        //ArrayList<LatLng> latLngArrayList = new ArrayList<>();
 
     }
 
@@ -377,13 +419,13 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
         mLocationRequest.setFastestInterval(120000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(getActivity(),
                     android.Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
                 mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-               // mGoogleMap.setMyLocationEnabled(true);
+                // mGoogleMap.setMyLocationEnabled(true);
                 mGoogleMap.setMyLocationEnabled(true);
                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
             } else {
@@ -410,6 +452,9 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
                 markerOption.position(latLng).icon(icon);
                 mCurrLocationMarker = googleMap.addMarker(markerOption);
                 txt_getlocationcurrent.setText(getLocationName(latLng.latitude,latLng.longitude));
+                ((SignUp_Activity)getActivity()).location_cr.setLat(latLng.latitude);
+                ((SignUp_Activity)getActivity()).location_cr.setLog(latLng.longitude);
+                ((SignUp_Activity)getActivity()).location_cr.setAddress(getLocationName(latLng.latitude,latLng.longitude));
             }
         });
 
@@ -544,15 +589,15 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
                 log_object = location.getLongitude();
                 Log.i("LocationCP",lat_object+","+log_object);
                 //move map camera
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
 
-                if (((Main_Screen_Acitivity) getActivity()).getCheckBtnSearch()) {
+/*                if (((Main_Screen_Acitivity) getActivity()).getCheckBtnSearch()) {
 
                     Log.i("Showmarker",""+((Main_Screen_Acitivity) getActivity()).getCheckBtnSearch());
                     //((Main_Screen_Acitivity) getActivity()).setCheckBtnSearch(false);
-
-                    distance(mCurrLocationMarker.getPosition().latitude,mCurrLocationMarker.getPosition().longitude);
-                }
+                    sentrequest("nguyenvana","dothanhnam");
+                    //distance(mCurrLocationMarker.getPosition().latitude,mCurrLocationMarker.getPosition().longitude);
+                }*/
             }
         };
 
@@ -663,8 +708,8 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
 
     }
     private void sendRequest(String latlog_begin, String latlog_end) {
-       // String origin = txt_Origin.getText().toString();
-       // String destination = txt_Destination.getText().toString();
+        // String origin = txt_Origin.getText().toString();
+        // String destination = txt_Destination.getText().toString();
 
         String origin =latlog_begin;
         String destination = latlog_end;
@@ -718,7 +763,7 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 15));
             ((TextView) dialog_findpath.findViewById(R.id.tvDuration)).setText(route.duration.text);
             ((TextView) dialog_findpath.findViewById(R.id.tvDistance)).setText(route.distance.text);
-             mCurrLocationMarker.remove();
+            mCurrLocationMarker.remove();
             for(Marker marker:markers){
                 marker.remove();
             }
@@ -766,6 +811,23 @@ public class Frg_Map_Doctor extends Fragment implements OnMapReadyCallback, Loca
         animate.setDuration(500);
         animate.setFillAfter(true);
         view.startAnimation(animate);
+    }
+
+
+    public void trainfrg(int position){
+        Log.i("clicked",position+"");
+
+        Frg_main_patient frg_main_patient = new Frg_main_patient();
+        //Frg_main_doctor frg_main_doctor = new Frg_main_doctor();
+        if(position == 1)
+        {
+            fragmentTransaction.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out);
+            fragmentTransaction.replace(R.id.frg_patient_main, frg_main_patient);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
+
+        }
     }
 
 }

@@ -31,6 +31,7 @@ import com.vinh.doctor_x.Fragment.Frg_Map;
 import com.vinh.doctor_x.Fragment.Frg_bookappointment;
 import com.vinh.doctor_x.Fragment.Frg_main_doctor;
 import com.vinh.doctor_x.Fragment.Frg_main_patient;
+import com.vinh.doctor_x.User.Location_cr;
 
 
 public class Main_Screen_Acitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
@@ -40,6 +41,8 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
     private Boolean checkBtnSearch = false;
+
+    public Location_cr location_cr = new Location_cr();
 
     public Boolean getCheckBtnSearch() {
         return checkBtnSearch;
@@ -108,15 +111,24 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
         transaction.addToBackStack(null);
         transaction.commit();
 
-        myRef.child("request_zone").child("abc").setValue("1");
-        myRef.child("request_zone").child("abc").addValueEventListener(new ValueEventListener() {
+        //myRef.child("request_zone").child("nguyenvana_dothanhnam").setValue("0");
+        myRef.child("request_zone").child("nguyenvana_dothanhnam").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 String value = dataSnapshot.getValue(String.class);
-               // Log.i("abc1",value);
-                //Toast.makeText(Main_Screen_Acitivity.this, value, Toast.LENGTH_SHORT).show();
-                map.showkey(value);
+
+                //Log.i("checkacti-false",value+"");
+                Log.i("checkact-btn",getCheckBtnSearch()+"_"+value);
+                if (getCheckBtnSearch()) {
+                    if(value.equals("1"))
+                    {
+                        Log.i("checkacti-true",value+"");
+                        map.startdistancenow(value);
+                    }
+                    else{
+                        Log.i("checkacti-false",value+"");
+                    }
+                }
             }
 
             @Override
@@ -134,7 +146,6 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
                     Log.i("clicked",id+"");
                     Log.i("clickedsome",R.id.nav_home+"");
                     map.trainfrg(1);
-
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                 }
                 return true;

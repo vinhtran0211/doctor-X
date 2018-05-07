@@ -20,9 +20,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vinh.doctor_x.Fragment.Frg_fillinfro_doctor;
 import com.vinh.doctor_x.Fragment.Frg_fillinfro_patient;
+import com.vinh.doctor_x.User.Location_cr;
 
 public class SignUp_Activity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
+    public Location_cr location_cr = new Location_cr();
+
 
     RadioButton rdb_cpatient ;
     RadioButton rdb_cdoctor ;
@@ -47,7 +50,7 @@ public class SignUp_Activity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
         mAuth = FirebaseAuth.getInstance();
-        String key =  mAuth.getCurrentUser().getUid();
+//        String key =  mAuth.getCurrentUser().getUid();
         contextOfApplication = getApplicationContext();
         rdg_chooseType = (RadioGroup)findViewById(R.id.rdg_chooseType);
         rdb_cpatient = (RadioButton)findViewById(R.id.rdb_cpatient);

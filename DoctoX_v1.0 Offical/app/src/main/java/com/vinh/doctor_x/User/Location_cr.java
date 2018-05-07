@@ -7,34 +7,7 @@ package com.vinh.doctor_x.User;
 public class Location_cr {
     double lat;
     double log;
-    String title,city;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Location_cr(double lat, double log, String title, String city) {
-        this.lat = lat;
-        this.log = log;
-        this.title = title;
-        this.city = city;
-    }
-
-    public Location_cr() {
-
-    }
+    String name,mobile,address,key_user;
 
     public double getLat() {
         return lat;
@@ -52,4 +25,48 @@ public class Location_cr {
         this.log = log;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getKey_user() {
+        return key_user;
+    }
+
+    public void setKey_user(String key_user) {
+        this.key_user = key_user;
+    }
+
+    public Location_cr(){
+
+    }
+
+    public Location_cr(double lat, double log, String name, String mobile, String address, String key_user) {
+        this.lat = lat;
+        this.log = log;
+        this.name = name;
+        this.mobile = mobile;
+        this.address = address;
+        this.key_user = key_user;
+    }
 }
