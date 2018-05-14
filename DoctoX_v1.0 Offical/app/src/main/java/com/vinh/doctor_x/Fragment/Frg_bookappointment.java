@@ -1,5 +1,6 @@
 package com.vinh.doctor_x.Fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -23,6 +24,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -36,8 +38,11 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.vinh.doctor_x.Login_Activity;
 import com.vinh.doctor_x.Main_Screen_Acitivity;
 import com.vinh.doctor_x.R;
+import com.vinh.doctor_x.Realtime_Location_Map_Activity;
+import com.vinh.doctor_x.screen;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -65,9 +70,18 @@ public class Frg_bookappointment extends Fragment {
     private Dialog dialog_chooseImg;
     Bitmap thumbnail;
     private Button date_time_set,btn_search;
-    Location closestLocation;
-    float smallestDistance = -1;
-    float[] results = new float[50];
+
+
+    private static String key_patient_request_zone;
+
+    public static String getKey_patient_request_zone() {
+        return key_patient_request_zone;
+    }
+
+    public static void setKey_patient_request_zone(String key_patient_request_zone) {
+        Frg_bookappointment.key_patient_request_zone = key_patient_request_zone;
+    }
+
 
     String [] values =
             {
@@ -128,6 +142,7 @@ public class Frg_bookappointment extends Fragment {
     private FirebaseDatabase database= FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
 
+    String item = "";
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme_DarkHAB);
@@ -180,7 +195,7 @@ public class Frg_bookappointment extends Fragment {
         btn_getdefault.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txt_chooseLocation.setText("05 Hang Trong, Ho Chi Minh, Viet Nam");
+                txt_chooseLocation.setText(screen.getPatient().getAddress());
                 dialog.dismiss();
             }
         });
@@ -196,8 +211,6 @@ public class Frg_bookappointment extends Fragment {
                 fragmentTransaction.replace(R.id.frg_patient_main, map);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-
-
             }
         });
 
@@ -277,20 +290,39 @@ public class Frg_bookappointment extends Fragment {
         });
 
 
+        Toast.makeText(contextThemeWrapper, screen.getPatient().getPhone(), Toast.LENGTH_SHORT).show();
+        spn_specialist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                item = spn_specialist.getSelectedItem().toString();
+               // Toast.makeText(contextThemeWrapper, spn_specialist.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((Main_Screen_Acitivity)getActivity()).setCheckBtnSearch(true);
+                String key = myRef.child("request_zone").child(screen.getPatient().getPhone()).push().getKey();
+                setKey_patient_request_zone(key);
+                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Specialist").setValue(item);
+                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Address").setValue(txt_chooseLocation.getText().toString());
+                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Doctor").setValue("null");
+                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Time").setValue(txt_pickertime_patient.getText().toString());
+                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Lat").setValue(Main_Screen_Acitivity.getPicker_Lat());
+                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Log").setValue(Main_Screen_Acitivity.getPicker_Log());
+                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("WhoCome").setValue("Doctor");
+                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Type").setValue("Appointment Normal");
+                Intent i = new Intent(getActivity(), Realtime_Location_Map_Activity.class);
+                startActivity(i);
+                ((Activity) getActivity()).overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
 
-               // myRef.child("request_zone").child("nguyenvana_dothanhnam").setValue("1");
-                fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                Frg_Map map = new Frg_Map();
-                fragmentTransaction.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out);
-                fragmentTransaction.replace(R.id.frg_patient_main, map);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
 
             }
         });

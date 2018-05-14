@@ -30,6 +30,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.vinh.doctor_x.User.Doctor_class;
+import com.vinh.doctor_x.User.Location_cr;
+import com.vinh.doctor_x.User.Patient_class;
 import com.vinh.doctor_x.inputpin;
 
 import java.util.concurrent.TimeUnit;
@@ -56,9 +59,6 @@ public class Login_Activity extends AppCompatActivity {
 
     private FirebaseAuth fbAuth;
     private ProgressDialog progress;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +78,6 @@ public class Login_Activity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 sendCode();
                 dialog.show();
 
@@ -98,10 +97,6 @@ public class Login_Activity extends AppCompatActivity {
         Toast.makeText(this,locale+"",Toast.LENGTH_LONG).show();
 
         getDialingCode getDialingCode = new getDialingCode();
-
-
-
-
         String phone = "+" + getDialingCode.compareDialingCode(removeFirstChar(phoneNumber.getText().toString())) + removeFirstChar(phoneNumber.getText().toString());
 
         setUpVerificatonCallbacks();
@@ -127,9 +122,6 @@ public class Login_Activity extends AppCompatActivity {
                     @Override
                     public void onVerificationCompleted(
                             PhoneAuthCredential credential) {
-
-
-
                         signInWithPhoneAuthCredential(credential);
                     }
 
@@ -181,6 +173,9 @@ public class Login_Activity extends AppCompatActivity {
         PhoneAuthCredential credential =
                 PhoneAuthProvider.getCredential(phoneVerificationId, code);
         signInWithPhoneAuthCredential(credential);
+
+        Log.i("logindialog","clicked");
+
     }
     public Boolean check()
     {
@@ -189,6 +184,8 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    //screen.setPatient(dataSnapshot.getValue(Patient_class.class));
+                    Toast.makeText(Login_Activity.this, screen.getPatient().getPhone(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Login_Activity.this, Main_Screen_Acitivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("type",1);
@@ -212,7 +209,7 @@ public class Login_Activity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-
+                        //screen.setDoctor(dataSnapshot.getValue(Doctor_class.class));
                         Intent intent = new Intent(Login_Activity.this,Main_Screen_Acitivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putInt("type",2);

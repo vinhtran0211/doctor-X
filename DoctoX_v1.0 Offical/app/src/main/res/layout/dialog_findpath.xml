@@ -42,8 +42,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 km"
-                android:id="@+id/tvDistance" />
+                android:text="0 km" />
 
             <ImageView
                 android:layout_marginLeft="20dp"
@@ -56,8 +55,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 min"
-                android:id="@+id/tvDuration" />
+                android:text="0 min" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

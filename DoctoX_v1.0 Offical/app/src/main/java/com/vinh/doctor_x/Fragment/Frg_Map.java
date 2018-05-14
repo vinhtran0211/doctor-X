@@ -58,11 +58,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.maps.android.PolyUtil;
 import com.vinh.doctor_x.Main_Screen_Acitivity;
 import com.vinh.doctor_x.Modules.DirectionFinder;
 import com.vinh.doctor_x.Modules.DirectionFinderListener;
 import com.vinh.doctor_x.Modules.Route;
 import com.vinh.doctor_x.R;
+import com.vinh.doctor_x.Realtime_Location_Map_Activity;
 import com.vinh.doctor_x.User.Location_cr;
 
 import java.io.IOException;
@@ -110,11 +112,18 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
     private DatabaseReference myRef = database.getReference();
     private MarkerOptions options = new MarkerOptions();
     private Boolean swipe_1_up = true, swipe_2_up =  true ,swipe_3_up = true;
-    private List<Location_cr> locations = new ArrayList<Location_cr>();
+    private static List<Location_cr> locations = new ArrayList<Location_cr>();
+
+    public static List<Location_cr> getLocations() {
+        return locations;
+    }
+
     private ArrayList<Marker> markers = new ArrayList<>();
     View myView,view_shortly_detail,view_cr;
     boolean isUp;
-    private double lat_object,log_object;
+    private double lat_object,log_object , lat_object_picker,log_object_picker;
+    private List<LatLng> polyline = new ArrayList<LatLng>();
+
     private FragmentManager manager;
     private FragmentTransaction fragmentTransaction = null;
     protected boolean _active = true;
@@ -139,8 +148,6 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
 
         //String key2 = myRef.child("request_zone").push().getKey();
         myRef.child("request_zone").child(namepatient+"_"+namedoctor).setValue("0");
-
-
     }
 
 
@@ -159,7 +166,6 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
         view = inflater.inflate(R.layout.frg_map,container,false);
         txt_getlocationcurrent = (EditText)view.findViewById(R.id.txt_locationcurrent);
         btn_getit_frg_map = (Button)view.findViewById(R.id.btn_getit_frg_map);
-        writeLocation();
         myView = (View)view.findViewById(R.id.my_view);
         myView.setVisibility(View.INVISIBLE);
         view_shortly_detail = (View)view.findViewById(R.id.detail_sortly_view);
@@ -204,7 +210,7 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
             @Override
             public void onClick(View view) {
                //distance();
-               dialog_findpath.dismiss();
+               //dialog_findpath.dismiss();
             }
         });
         fab1.setOnClickListener(new View.OnClickListener() {
@@ -234,6 +240,7 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
             }
         });
         setupmapifneed();
+
         //myRef.child("request_zone").child("abc").setValue("1");
         return view;
     }
@@ -253,17 +260,24 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
                 Log.i("dataSnapshot",dataSnapshot.exists()+"");
 
                 Location_cr location_cr = dataSnapshot.getValue(Location_cr.class);
-                locations.add(location_cr);
-                Log.i("checkchange",location_cr.getLat()+"");
-                Marker marker;
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.markerdoctor);
-                options.position(new LatLng(location_cr.getLat(),location_cr.getLog()));
-                options.title(location_cr.getName());
-                options.snippet(location_cr.getMobile());
-                options.icon(icon);
-                marker = mGoogleMap.addMarker(options);
-                //mGoogleMap.addMarker(options);
-                markers.add(marker);
+                if(checkCopy(location_cr.getMobile()))
+                {
+                    if(checknearly(new LatLng(location_cr.getLat(),location_cr.getLog())))
+                    {
+                        locations.add(location_cr);
+                        Log.i("checkchange",location_cr.getName()+"");
+                        Marker marker;
+                        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.markerdoctor);
+                        options.position(new LatLng(location_cr.getLat(),location_cr.getLog()));
+                        options.title(location_cr.getName());
+                        options.snippet(location_cr.getMobile());
+                        options.icon(icon);
+                        marker = mGoogleMap.addMarker(options);
+                        //mGoogleMap.addMarker(options);
+                        markers.add(marker);
+                    }
+                }
+
             }
 
             @Override
@@ -287,8 +301,6 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
             }
         });
         Log.i("Showmarker",locations.size()+"");
-        for (Location_cr location : locations) {
-        }
            //Location_cr location1 = new Location_cr(10.357264,106.223163,"diem2","ben tre");
           //  Location_cr location2 = new Location_cr(10.331439,106.037153,"diem1","ca mau");
           //  locations.add(location1);
@@ -296,36 +308,46 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
             //ArrayList<LatLng> latLngArrayList = new ArrayList<>();
     }
 
+    public boolean checknearly(LatLng point)
+    {
+        if(PolyUtil.isLocationOnPath(point,polyline,
+        true,
+        10000))
+        {
+            Log.i("nearly",point.latitude+","+point.longitude);
+            Log.i("nearly_2",polyline.get(0).latitude+","+polyline.get(0).longitude);
+            return true;
+        }
+        return false;
+    }
+
+
+    public boolean checkCopy(String newphone)
+    {
+        if(locations.size() > 0 )
+        {
+            for(Location_cr location_cr:locations){
+                if(location_cr.getMobile().equals(newphone))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     public void distance(Double lat,Double log) {
 
-       // progressDialog = ProgressDialog.show(getContext(), "Please wait.",
-        //        "Connecting....!", true);
-        //int waited = 0;
-        //while (_active && (waited < _splashTime)) {
-        //    sleep(100);
-        //    if (_active) {
-        //        waited += 100;
-        //    }
-       // }
         progressDialog.dismiss();
 
         Log.i("checkacti-distance-now",progressDialog.isShowing()+"");
-//        Toast.makeText(getContext(), "" + ((Main_Screen_Acitivity) getActivity()).getCheckBtnSearch(), Toast.LENGTH_SHORT).show();
         final ArrayList<Integer> arrayList = new ArrayList<Integer>();
         int smallest = -1;
         for (int i = 0; i < locations.size(); i++) {
-            //BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.patient_marker);
-            //MarkerOptions markerOption = new MarkerOptions();
-            //markerOption.position(new LatLng(locations.get(i).getLat(), locations.get(i).getLog())).icon(icon).title(locations.get(i).getTitle());
-            //marker = mGoogleMap.addMarker(markerOption);
             float[] results = new float[3];
             Location.distanceBetween(locations.get(i).getLat(), locations.get(i).getLog(),
                     mCurrLocationMarker.getPosition().latitude, mCurrLocationMarker.getPosition().longitude, results);
-               /* Toast.makeText(getContext(), "Distance is: " + results[0], Toast.LENGTH_SHORT).show();
-                Log.d("Distance",results[0]+"");
-                txt_getlocationcurrent.setText(results[0]+"");
-                System.out.println("Distance is: " + results[0]);*/
             if (smallestDistance == -1 || results[0] < smallestDistance) {
                 smallestDistance = results[0];
                 smallest = i;
@@ -334,10 +356,8 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
             Log.i("smallest", smallest + "");
             arrayList.add((int) results[0]);
         }
-        Log.i("checklat", lat+ "," + log);
+        Log.i("checkact-latlog", lat+ "," + log);
         sendRequest(lat + "," +log, locations.get(smallest).getLat() + "," + locations.get(smallest).getLog());
-        // Log.i("khoangcach",CalculationByDistance(new LatLng(lat,log),new LatLng(locations.get(smallest).getLat(),locations.get(smallest).getLog()))+"");
-        // ((Main_Screen_Acitivity) getActivity()).setCheckBtnSearch(false);
     }
 
 
@@ -444,10 +464,9 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
                 MarkerOptions markerOption = new MarkerOptions();
                 markerOption.position(latLng).icon(icon);
                 mCurrLocationMarker = googleMap.addMarker(markerOption);
+                lat_object_picker = latLng.latitude;
+                log_object_picker = latLng.longitude;
                 txt_getlocationcurrent.setText(getLocationName(latLng.latitude,latLng.longitude));
-                ((Main_Screen_Acitivity)getActivity()).location_cr.setLat(latLng.latitude);
-                ((Main_Screen_Acitivity)getActivity()).location_cr.setLog(latLng.longitude);
-                ((Main_Screen_Acitivity)getActivity()).location_cr.setAddress(getLocationName(latLng.latitude,latLng.longitude));
             }
         });
 
@@ -487,8 +506,10 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
                                 builder.setTitle("Set location current yours at there ? ");
                                 builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        ((Main_Screen_Acitivity) getActivity()).setLocationpicker(getLocationName(lat_object, log_object));
+                                        lat_object_picker = marker.getPosition().latitude;
+                                        log_object_picker = marker.getPosition().latitude;
                                         FragmentManager frg_map = getActivity().getSupportFragmentManager();
+                                        Main_Screen_Acitivity.setLocationpicker(txt_getlocationcurrent.getText().toString());
                                         if (frg_map.getBackStackEntryCount() > 0) {
                                             Log.i("MainActivity", "popping backstack");
                                             frg_map.popBackStack();
@@ -537,8 +558,9 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
     public String getLocationName(double lattitude, double longitude) {
         String cityName = "Not Found";
         Geocoder gcd = new Geocoder(getActivity(), Locale.getDefault());
+        Main_Screen_Acitivity.setPicker_Lat(lattitude);
+        Main_Screen_Acitivity.setPicker_Log(longitude);
         try {
-
             List<Address> addresses = gcd.getFromLocation(lattitude, longitude,
                     10);
 
@@ -577,9 +599,10 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
                 markerOptions.title("Current Position");
                 markerOptions.icon(icon);
                 mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-
+                polyline.add(new LatLng(location.getLatitude(),location.getLongitude()));
                 lat_object = location.getLatitude();
                 log_object = location.getLongitude();
+
                 Log.i("LocationCP",lat_object+","+log_object);
                 //move map camera
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
@@ -703,7 +726,7 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
     private void sendRequest(String latlog_begin, String latlog_end) {
        // String origin = txt_Origin.getText().toString();
        // String destination = txt_Destination.getText().toString();
-
+        Log.i("run","sendRequest");
         String origin =latlog_begin;
         String destination = latlog_end;
         if (origin.isEmpty()) {
@@ -725,7 +748,7 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
     public void onDirectionFinderStart() {
 //        progressDialog = ProgressDialog.show(getActivity(), "Please wait.",
                // "Finding direction..!", true);
-
+        Log.i("run","onDirectionFinderStart");
         if (originMarkers != null) {
             for (Marker marker : originMarkers) {
                 marker.remove();
@@ -747,16 +770,16 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
 
     @Override
     public void onDirectionFinderSuccess(List<Route> routes) {
-
         //progressDialog.dismiss();
         polylinePaths = new ArrayList<>();
         originMarkers = new ArrayList<>();
         destinationMarkers = new ArrayList<>();
 
         for (Route route : routes) {
+
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 15));
-            ((TextView) dialog_findpath.findViewById(R.id.tvDuration)).setText(route.duration.text);
-            ((TextView) dialog_findpath.findViewById(R.id.tvDistance)).setText(route.distance.text);
+            ((TextView) view.findViewById(R.id.tvDuration)).setText(route.duration.text);
+            ((TextView) view.findViewById(R.id.tvDistance)).setText(route.distance.text);
              mCurrLocationMarker.remove();
             for(Marker marker:markers){
                 marker.remove();
@@ -780,6 +803,7 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
 
             polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
         }
+
     }
 
 

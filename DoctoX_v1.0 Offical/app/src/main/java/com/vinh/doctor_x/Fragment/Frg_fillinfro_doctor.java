@@ -304,7 +304,7 @@ public class Frg_fillinfro_doctor extends Fragment implements OnMapReadyCallback
                 drv.setAvatar(convertToBase64(thumbnail));
                 drv.setName(_nameText.getText().toString());
                 drv.setType("1");
-                drv.setAddress( ((Main_Screen_Acitivity)getActivity()).location_cr.getAddress());
+                drv.setAddress(_addressText.getText().toString());
                 drv.setCode(_doctorcode.getText().toString());
                 drv.setDOB(_DOB.getText().toString());
                 drv.setPhone(_mobileText.getText().toString());

@@ -32,6 +32,7 @@ import com.vinh.doctor_x.Fragment.Frg_bookappointment;
 import com.vinh.doctor_x.Fragment.Frg_main_doctor;
 import com.vinh.doctor_x.Fragment.Frg_main_patient;
 import com.vinh.doctor_x.User.Location_cr;
+import com.vinh.doctor_x.User.Patient_class;
 
 
 public class Main_Screen_Acitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
@@ -41,8 +42,9 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
     private Boolean checkBtnSearch = false;
+    public Patient_class patient = new Patient_class();
 
-    public Location_cr location_cr = new Location_cr();
+    public static Location_cr location_cr = new Location_cr();
 
     public Boolean getCheckBtnSearch() {
         return checkBtnSearch;
@@ -52,14 +54,32 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
         this.checkBtnSearch = checkBtnSearch;
     }
 
-    private String locationpicker;
+    private static String locationpicker;
 
-    public String getLocationpicker() {
+    public static String getLocationpicker() {
         return locationpicker;
     }
 
-    public void setLocationpicker(String locationpicker) {
-        this.locationpicker = locationpicker;
+    public static void setLocationpicker(String locationpicker) {
+        Main_Screen_Acitivity.locationpicker = locationpicker;
+    }
+
+    private static Double picker_Lat = 0.0,picker_Log = 0.0;
+
+    public static Double getPicker_Lat() {
+        return picker_Lat;
+    }
+
+    public static void setPicker_Lat(Double picker_Lat) {
+        Main_Screen_Acitivity.picker_Lat = picker_Lat;
+    }
+
+    public static Double getPicker_Log() {
+        return picker_Log;
+    }
+
+    public static void setPicker_Log(Double picker_Log) {
+        Main_Screen_Acitivity.picker_Log = picker_Log;
     }
 
     FragmentManager manager;
@@ -92,17 +112,19 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
         mActivityTitle = getTitle().toString();
 
 
-      //  Intent intent = getIntent();
-      //  Bundle packageFromCaller = intent.getBundleExtra("gettype");
-//        type = packageFromCaller.getInt("type");
+        Intent intent = getIntent();
+        Bundle packageFromCaller = intent.getBundleExtra("gettype");
+        type = packageFromCaller.getInt("type");
         //setup fragment
         manager= getSupportFragmentManager();
         transaction= manager.beginTransaction();
 
-        type = 1;
+        //type = 1;
         if(type == 1)
         {
             transaction.replace(R.id.frg_patient_main, map, "Fragment_Fill_Patient");
+            //Intent i = new Intent(this,Realtime_Location_Map_Activity.class);
+            //startActivity(i);
         }
         else if(type == 2)
         {
@@ -112,30 +134,7 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
         transaction.commit();
 
         //myRef.child("request_zone").child("nguyenvana_dothanhnam").setValue("0");
-        myRef.child("request_zone").child("nguyenvana_dothanhnam").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class);
 
-                //Log.i("checkacti-false",value+"");
-                Log.i("checkact-btn",getCheckBtnSearch()+"_"+value);
-                if (getCheckBtnSearch()) {
-                    if(value.equals("1"))
-                    {
-                        Log.i("checkacti-true",value+"");
-                        map.startdistancenow(value);
-                    }
-                    else{
-                        Log.i("checkacti-false",value+"");
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

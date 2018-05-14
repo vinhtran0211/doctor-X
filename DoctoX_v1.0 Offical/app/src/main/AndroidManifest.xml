@@ -30,32 +30,23 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".SignUp_Activity"
-            android:theme="@style/AppTheme.Dark">
-
-        </activity>
-
-        <activity android:name=".Main_doctor">
-
-        </activity>
-        <activity android:name=".Main_Patient" >
-
-        </activity>
-        <activity android:name=".Testmap">
-
-        </activity>
+            android:theme="@style/AppTheme.Dark"></activity>
+        <activity android:name=".Main_doctor"></activity>
+        <activity android:name=".Main_Patient"></activity>
+        <activity android:name=".Testmap"></activity>
         <activity
-            android:exported="true"
             android:name=".Main_Screen_Acitivity"
-            android:theme="@style/AppTheme" >
-
-        </activity>
-        <activity android:name=".screen" android:theme="@style/AppTheme.Dark">
+            android:exported="true"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".screen"
+            android:theme="@style/AppTheme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -64,7 +55,7 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/key_API_map" />
 
-
+        <activity android:name=".Realtime_Location_Map_Activity"></activity>
     </application>
 
 </manifest>

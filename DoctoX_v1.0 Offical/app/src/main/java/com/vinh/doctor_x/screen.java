@@ -28,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vinh.doctor_x.Fragment.Frg_Map;
+import com.vinh.doctor_x.User.Doctor_class;
+import com.vinh.doctor_x.User.Patient_class;
 
 
 public class screen extends AppCompatActivity {
@@ -41,6 +43,29 @@ public class screen extends AppCompatActivity {
     private FragmentTransaction fragmentTransaction ;
     protected boolean _active = true;
     protected int _splashTime = 5000;
+
+
+    public static Patient_class patient = new Patient_class();
+
+    public static Patient_class getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient_class patient) {
+        this.patient = patient;
+    }
+
+    public static Doctor_class getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor_class doctor) {
+        this.doctor = doctor;
+    }
+
+    public static Doctor_class doctor = new Doctor_class();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +138,8 @@ public class screen extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    setPatient(dataSnapshot.getValue(Patient_class.class));
+                    Toast.makeText(screen.this, getPatient().getPhone(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(screen.this, Main_Screen_Acitivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("type",1);
@@ -133,6 +160,7 @@ public class screen extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    setDoctor(dataSnapshot.getValue(Doctor_class.class));
                     Intent intent = new Intent(screen.this, Main_Screen_Acitivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("type",2);
