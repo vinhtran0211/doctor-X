@@ -8,6 +8,14 @@
     tools:openDrawer="start"
     tools:context="com.vinh.doctor_x.Main_Screen_Acitivity"
     android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:background="@color/accent"
+        />
+
     <FrameLayout
         android:id="@+id/frg_patient_main"
         android:layout_width="match_parent"

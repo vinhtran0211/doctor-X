@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.vinh.doctor_x.Login_Activity;
+import com.vinh.doctor_x.Main_Screen_Acitivity;
 import com.vinh.doctor_x.R;
 
 /**
@@ -52,7 +53,7 @@ public class Frg_main_patient extends Fragment {
                 fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
 
-
+                Main_Screen_Acitivity.setCheckBtnSearch(true);
                 Frg_bookappointment fragment = new Frg_bookappointment();
                 fragmentTransaction.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out);
                 fragmentTransaction.replace(R.id.frg_patient_main, fragment);

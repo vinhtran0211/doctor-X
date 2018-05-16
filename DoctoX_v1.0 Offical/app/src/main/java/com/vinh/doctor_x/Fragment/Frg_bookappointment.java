@@ -14,9 +14,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
@@ -42,7 +45,6 @@ import com.vinh.doctor_x.Login_Activity;
 import com.vinh.doctor_x.Main_Screen_Acitivity;
 import com.vinh.doctor_x.R;
 import com.vinh.doctor_x.Realtime_Location_Map_Activity;
-import com.vinh.doctor_x.screen;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -82,6 +84,19 @@ public class Frg_bookappointment extends Fragment {
         Frg_bookappointment.key_patient_request_zone = key_patient_request_zone;
     }
 
+
+
+
+
+    private static  String specialist = "";
+
+    public static String getSpecialist() {
+        return specialist;
+    }
+
+    public  void setSpecialist(String specialist) {
+        this.specialist = specialist;
+    }
 
     String [] values =
             {
@@ -142,11 +157,11 @@ public class Frg_bookappointment extends Fragment {
     private FirebaseDatabase database= FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
 
+
     String item = "";
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme_DarkHAB);
-
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         view = inflater.inflate(R.layout.frg_bookappointment,container,false);
         txt_chooseLocation = (EditText)view.findViewById(R.id.txt_chooselocation);
@@ -195,7 +210,7 @@ public class Frg_bookappointment extends Fragment {
         btn_getdefault.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txt_chooseLocation.setText(screen.getPatient().getAddress());
+                txt_chooseLocation.setText(Main_Screen_Acitivity.getPatient().getAddress());
                 dialog.dismiss();
             }
         });
@@ -274,14 +289,8 @@ public class Frg_bookappointment extends Fragment {
                         timePicker.getCurrentHour(),
                         timePicker.getCurrentMinute());
 
-                String meridiem = "AM";
-                int hour = timePicker.getCurrentHour();
-                if(timePicker.getCurrentHour()> 12)
-                {
-                    hour = timePicker.getCurrentHour() - 12;
-                    meridiem = "PM";
-                }
-                String time = hour+":"+timePicker.getCurrentMinute()+" "+ meridiem +" "+datePicker.getDayOfMonth()+"/"+datePicker.getMonth()+"/"+datePicker.getYear() ;
+                Log.i("datetime",calendar.getInstance().getTime()+"");
+                String time = timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute() +" "+datePicker.getDayOfMonth()+"-"+datePicker.getMonth()+"-"+datePicker.getYear() ;
 
                 Log.d("Time",time);
                 txt_pickertime_patient.setText(time);
@@ -290,7 +299,7 @@ public class Frg_bookappointment extends Fragment {
         });
 
 
-        Toast.makeText(contextThemeWrapper, screen.getPatient().getPhone(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(contextThemeWrapper, Main_Screen_Acitivity.getPatient().getPhone(), Toast.LENGTH_SHORT).show();
         spn_specialist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -309,21 +318,21 @@ public class Frg_bookappointment extends Fragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String key = myRef.child("request_zone").child(screen.getPatient().getPhone()).push().getKey();
-                setKey_patient_request_zone(key);
-                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Specialist").setValue(item);
-                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Address").setValue(txt_chooseLocation.getText().toString());
-                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Doctor").setValue("null");
-                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Time").setValue(txt_pickertime_patient.getText().toString());
-                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Lat").setValue(Main_Screen_Acitivity.getPicker_Lat());
-                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Log").setValue(Main_Screen_Acitivity.getPicker_Log());
-                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("WhoCome").setValue("Doctor");
-                myRef.child("request_zone").child(screen.getPatient().getPhone()).child(key).child("Type").setValue("Appointment Normal");
+                setSpecialist(item);
+                //String key = myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).push().getKey();
+                String key =txt_pickertime_patient.getText().toString().trim();
+                setKey_patient_request_zone(txt_pickertime_patient.getText().toString().trim());
+                myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(key).child("Specialist").setValue(item);
+                myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(key).child("Address").setValue(txt_chooseLocation.getText().toString());
+                myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(key).child("Doctor").setValue("null");
+                myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(key).child("Time").setValue(txt_pickertime_patient.getText().toString());
+                myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(key).child("Lat").setValue(Main_Screen_Acitivity.getPicker_Lat());
+                myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(key).child("Log").setValue(Main_Screen_Acitivity.getPicker_Log());
+                myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(key).child("WhoCome").setValue("Doctor");
+                myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(key).child("Type").setValue("Appointment Normal");
                 Intent i = new Intent(getActivity(), Realtime_Location_Map_Activity.class);
                 startActivity(i);
                 ((Activity) getActivity()).overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
-
-
             }
         });
 

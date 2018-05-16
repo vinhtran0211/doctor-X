@@ -303,12 +303,12 @@ public class Frg_fillinfro_doctor extends Fragment implements OnMapReadyCallback
                 Doctor_class drv =new Doctor_class();
                 drv.setAvatar(convertToBase64(thumbnail));
                 drv.setName(_nameText.getText().toString());
-                drv.setType("1");
+                drv.setType("waiting");
                 drv.setAddress(_addressText.getText().toString());
                 drv.setCode(_doctorcode.getText().toString());
                 drv.setDOB(_DOB.getText().toString());
                 drv.setPhone(_mobileText.getText().toString());
-                drv.setSpecialist(specialist);
+                drv.setSpecialist(spn_specialist.getSelectedItem().toString());
                 drv.setWorkat(_workingat.getText().toString());
                 drv.setWorkinghour(_workinghour.getText().toString());
                 drv.setGender(gender);

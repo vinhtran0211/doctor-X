@@ -1,11 +1,15 @@
 package com.vinh.doctor_x;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -13,7 +17,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,6 +29,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +40,7 @@ import com.vinh.doctor_x.Fragment.Frg_Map;
 import com.vinh.doctor_x.Fragment.Frg_bookappointment;
 import com.vinh.doctor_x.Fragment.Frg_main_doctor;
 import com.vinh.doctor_x.Fragment.Frg_main_patient;
+import com.vinh.doctor_x.User.Doctor_class;
 import com.vinh.doctor_x.User.Location_cr;
 import com.vinh.doctor_x.User.Patient_class;
 
@@ -41,20 +51,21 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
-    private Boolean checkBtnSearch = false;
+
     public Patient_class patient = new Patient_class();
 
     public static Location_cr location_cr = new Location_cr();
 
-    public Boolean getCheckBtnSearch() {
+    private static Boolean checkBtnSearch = false;
+    public static Boolean getCheckBtnSearch() {
         return checkBtnSearch;
     }
 
-    public void setCheckBtnSearch(Boolean checkBtnSearch) {
-        this.checkBtnSearch = checkBtnSearch;
+    public static void setCheckBtnSearch(Boolean checkBtnSearch) {
+        Main_Screen_Acitivity.checkBtnSearch = checkBtnSearch;
     }
 
-    private static String locationpicker;
+    private static String locationpicker = "";
 
     public static String getLocationpicker() {
         return locationpicker;
@@ -82,17 +93,54 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
         Main_Screen_Acitivity.picker_Log = picker_Log;
     }
 
+
+    public static Patient_class patient_class = new Patient_class();
+
+    public static Patient_class getPatient() {
+        return patient_class;
+    }
+
+    public void setPatient(Patient_class patient) {
+        this.patient_class = patient;
+    }
+
+    public static Doctor_class getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor_class doctor) {
+        this.doctor = doctor;
+    }
+
+    public static Doctor_class doctor = new Doctor_class();
+
+    public static String key;
+
+    public static String getKey() {
+        return key;
+    }
+
+    public static void setKey(String key) {
+        screen.key = key;
+    }
+
+    private Toolbar mToolbar;
+    private FragmentManager mFragmentManager;
     FragmentManager manager;
     FragmentTransaction transaction;
     Frg_main_patient frg_main_patient = new Frg_main_patient();
-    Frg_main_doctor frg_main_doctor = new Frg_main_doctor();
 
-    Frg_Map map = new Frg_Map();
+    private NavigationView navigationView;
     private int type ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen_acitivity);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        Intent i = new Intent(Main_Screen_Acitivity.this, service.class);
+        startService(i);
 
      //   mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -103,14 +151,19 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
         contextOfApplication = getApplicationContext();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_dark)));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        Menu menu = navigationView.getMenu();
+        MenuItem nav_home = menu.findItem(R.id.nav_home);
+
         //View header = navigationView.inflateHeaderView(R.layout.nav_header_music);
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
-
 
         Intent intent = getIntent();
         Bundle packageFromCaller = intent.getBundleExtra("gettype");
@@ -118,13 +171,12 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
         //setup fragment
         manager= getSupportFragmentManager();
         transaction= manager.beginTransaction();
-
+        Frg_Map map = new Frg_Map();
+        Frg_main_doctor frg_main_doctor = new Frg_main_doctor();
         //type = 1;
         if(type == 1)
         {
             transaction.replace(R.id.frg_patient_main, map, "Fragment_Fill_Patient");
-            //Intent i = new Intent(this,Realtime_Location_Map_Activity.class);
-            //startActivity(i);
         }
         else if(type == 2)
         {
@@ -132,8 +184,8 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
         }
         transaction.addToBackStack(null);
         transaction.commit();
+        setup();
 
-        //myRef.child("request_zone").child("nguyenvana_dothanhnam").setValue("0");
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -144,13 +196,101 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
                 if (id == R.id.nav_home) {
                     Log.i("clicked",id+"");
                     Log.i("clickedsome",R.id.nav_home+"");
-                    map.trainfrg(1);
+                    //map.trainfrg(1);
+                    changeFragment(new Frg_main_patient(), true);
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                 }
                 return true;
             }
         });
+
+
+        mFragmentManager = getSupportFragmentManager();
+
+        if(screen.getKey() != null && getDoctor().getPhone() != null)
+        {
+            myRef.child("doctor").child(screen.getKey()).child("type").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists())
+                    {
+                        Log.d("typecheck",dataSnapshot.getValue(String.class));
+                        if(dataSnapshot.getValue(String.class).equals("2"))
+                        {
+                            Effectstype effect;
+                            NiftyDialogBuilder dialogBuilder=NiftyDialogBuilder.getInstance(Main_Screen_Acitivity.this);
+                            effect = Effectstype.Shake;
+                            dialogBuilder
+                                    .withTitle("Nguyen Van An")                                  //.withTitle(null)  no title
+                                    .withTitleColor("#FFFFFF")                                  //def
+                                    .withDividerColor("#11000000")                              //def
+                                    .withMessage("You have a request ! \nDetail infor: Nguyen Van A \nLocation :")                     //.withMessage(null)  no Msg
+                                    .withMessageColor("#FFFFFFFF")                              //def  | withMessageColor(int resid)
+                                    .withDialogColor("#FFE74C3C")                               //def  | withDialogColor(int resid)                               //def
+                                    .withIcon(getResources().getDrawable(R.drawable.doctor))
+                                    .isCancelableOnTouchOutside(true)                           //def    | isCancelable(true)
+                                    .withDuration(700)                                          //def
+                                    .withEffect(effect)                                         //def Effectstype.Slidetop
+                                    .withButton1Text("OK")                                      //def gone
+                                    .withButton2Text("Cancel")                                  //def gone
+                                    //.setCustomView(R.layout.custom_view,v.getContext())         //.setCustomView(View or ResId,context)
+                                    .setButton1Click(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent i = new Intent(Main_Screen_Acitivity.this,Doctor_Realtime_Map_Activity.class);
+                                            i.putExtra("type","forapatient");
+                                            startActivity(i);
+                                            Toast.makeText(v.getContext(), "i'm btn1", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .setButton2Click(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(v.getContext(), "i'm btn2", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .show();
+
+                            //TODO
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
+
+    private void changeFragment(Fragment fragment, boolean needToAddBackstack) {
+        FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.replace(R.id.frg_patient_main, fragment);
+        mFragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        if (needToAddBackstack)
+            mFragmentTransaction.addToBackStack(null);
+        mFragmentTransaction.commit();
+    }
+
+    private void setup(){
+        if(screen.getKey() != null)
+        {
+            setKey(screen.getKey());
+            setDoctor(screen.getDoctor());
+            setPatient(screen.getPatient());
+
+            Toast.makeText(contextOfApplication, "Set up success with data screen \nKey: "+screen.getKey()+"\nDoctor: "+getDoctor().getName()+"\nPatient: "+getPatient().getName(), Toast.LENGTH_LONG).show();
+        }
+        else if(Login_Activity.getKey() != null){
+            setKey(Login_Activity.getKey());
+            setDoctor(Login_Activity.getDoctor());
+            setPatient(Login_Activity.getPatient());
+
+            Toast.makeText(contextOfApplication, "Set up success with data Login_Activity \nKey: "+Login_Activity.getKey()+"\nDoctor: "+getDoctor().getName()+"\nPatient: "+getPatient().getName(), Toast.LENGTH_LONG).show();
+        }
+    }
+
     private FirebaseDatabase database= FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
 
@@ -168,7 +308,7 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation");
+                getSupportActionBar().setTitle("");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -184,6 +324,7 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
     }
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -206,18 +347,29 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-
-        // Activate the navigation drawer toggle
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(Gravity.START)) {
+            mDrawerLayout.closeDrawer(Gravity.START);
         }
+        if (mDrawerLayout.isDrawerOpen(Gravity.START)) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+        } else if (mFragmentManager.getBackStackEntryCount() > 0) {
+            mFragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
-        Toast.makeText(contextOfApplication, item.getItemId(), Toast.LENGTH_SHORT).show();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            //Log.i(TAG, "onOptionsItemSelected: Home Button Clicked");
+            if (mDrawerLayout.isDrawerOpen(Gravity.START)) {
+                mDrawerLayout.closeDrawer(Gravity.START);
+            } else {
+                mDrawerLayout.openDrawer(Gravity.START);
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -59,6 +61,38 @@ public class Login_Activity extends AppCompatActivity {
 
     private FirebaseAuth fbAuth;
     private ProgressDialog progress;
+
+
+    public static Patient_class patient = new Patient_class();
+
+    public static Doctor_class doctor = new Doctor_class();
+
+    public static String key;
+
+    public static Patient_class getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient_class patient) {
+        this.patient = patient;
+    }
+
+    public static Doctor_class getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor_class doctor) {
+        this.doctor = doctor;
+    }
+
+    public static String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,12 +203,47 @@ public class Login_Activity extends AppCompatActivity {
     }
     public void verifyCode(View view) {
         String code = txt_pin_entry.getText().toString();
-        Log.d("d",code);
-        PhoneAuthCredential credential =
-                PhoneAuthProvider.getCredential(phoneVerificationId, code);
-        signInWithPhoneAuthCredential(credential);
 
-        Log.i("logindialog","clicked");
+        if(code.isEmpty())
+        {
+            Effectstype effect;
+            NiftyDialogBuilder dialogBuilder=NiftyDialogBuilder.getInstance(Login_Activity.this);
+            effect = Effectstype.Shake;
+            dialogBuilder
+                    .withTitle("Waiting .....")                                  //.withTitle(null)  no title
+                    .withTitleColor("#FFFFFF")                                  //def
+                    .withDividerColor("#11000000")                              //def
+                    .withMessage("Please you must receive passcode in next time")                     //.withMessage(null)  no Msg
+                    .withMessageColor("#FFFFFFFF")                              //def  | withMessageColor(int resid)
+                    .withDialogColor("#FFE74C3C")                               //def  | withDialogColor(int resid)                               //def
+                    //.withIcon(getResources().getDrawable(R.drawable.doctor))
+                    .isCancelableOnTouchOutside(true)                           //def    | isCancelable(true)
+                    .withDuration(700)                                          //def
+                    .withEffect(effect)                                         //def Effectstype.Slidetop
+                    .withButton1Text("OK I know!")                                      //def gone
+                    //time.withButton2Text("Cancel")                                  //def gone
+                    //.setCustomView(R.layout.custom_view,v.getContext())         //.setCustomView(View or ResId,context)
+                    .setButton1Click(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                   /* .setButton2Click(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(v.getContext(), "i'm btn2", Toast.LENGTH_SHORT).show();
+                        }*/
+                    })
+                    .show();
+        }
+        else{
+            Log.d("d",code);
+            PhoneAuthCredential credential =
+                    PhoneAuthProvider.getCredential(phoneVerificationId, code);
+            signInWithPhoneAuthCredential(credential);
+
+            Log.i("logindialog","clicked");
+        }
 
     }
     public Boolean check()
@@ -184,7 +253,8 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    //screen.setPatient(dataSnapshot.getValue(Patient_class.class));
+                    setPatient(dataSnapshot.getValue(Patient_class.class));
+                    setKey(dataSnapshot.getKey());
                     Toast.makeText(Login_Activity.this, screen.getPatient().getPhone(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Login_Activity.this, Main_Screen_Acitivity.class);
                     Bundle bundle = new Bundle();
@@ -209,7 +279,8 @@ public class Login_Activity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        //screen.setDoctor(dataSnapshot.getValue(Doctor_class.class));
+                        setDoctor(dataSnapshot.getValue(Doctor_class.class));
+                        setKey(dataSnapshot.getKey());
                         Intent intent = new Intent(Login_Activity.this,Main_Screen_Acitivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putInt("type",2);

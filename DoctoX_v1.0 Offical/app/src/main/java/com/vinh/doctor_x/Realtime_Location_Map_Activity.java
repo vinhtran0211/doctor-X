@@ -2,11 +2,14 @@ package com.vinh.doctor_x;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -16,6 +19,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,9 +32,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -56,15 +65,17 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
     private List<Location_cr> locations = new ArrayList<Location_cr>();
-    private FirebaseDatabase database= FirebaseDatabase.getInstance();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
     float smallestDistance = -1;
     private Location_cr location_des = new Location_cr();
     private List<Location_cr> locations_nearly = Frg_Map.getLocations();
-    private Double lat_cr_user,log_cr_user;
+    private Double lat_cr_user, log_cr_user;
 
     private String address_cr_user;
     private String request = null;
+
+    private List<String> send_for_doctor = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +85,7 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        btnFindPath = (Button) findViewById(R.id.btnFindPath);
+       // btnFindPath = (Button) findViewById(R.id.btnFindPath);
         etOrigin = (EditText) findViewById(R.id.etOrigin);
         etDestination = (EditText) findViewById(R.id.etDestination);
 
@@ -83,12 +94,13 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String key = dataSnapshot.getKey();
                 Doctor_class doctor = dataSnapshot.getValue(Doctor_class.class);
-                for(Location_cr location_cr:locations_nearly)
-                {
-                    if(location_cr.getMobile().equals(doctor.getPhone()))
-                    {
-                        myRef.child("doctor").child(key).child("type").setValue("2");
-                        //2 LA trang thai requested
+                for (Location_cr location_cr : locations_nearly) {
+                    if (location_cr.getMobile().equals(doctor.getPhone())) {
+                        if (doctor.getSpecialist().equals(Frg_bookappointment.getSpecialist())) {
+                            send_for_doctor.add(key);
+                            myRef.child("doctor").child(key).child("type").setValue(Frg_bookappointment.getKey_patient_request_zone()+"_"+Main_Screen_Acitivity.getPatient().getPhone());
+                            //2 LA trang thai requested
+                        }
                     }
                 }
             }
@@ -117,8 +129,7 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Location_cr location_cr = dataSnapshot.getValue(Location_cr.class);
-                if(checkCopy(location_cr.getMobile()))
-                {
+                if (checkCopy(location_cr.getMobile())) {
                     locations.add(location_cr);
                 }
             }
@@ -143,49 +154,54 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
 
             }
         });
-        Log.i("Showmarker",locations.size()+"");
+
+
+        Log.i("Showmarker", locations.size() + "");
         progressDialog = ProgressDialog.show(this, "Please wait.",
                 "Finding Doctor for you..!", true);
         myRef.child("request_zone").child(screen.getPatient().getPhone()).child(Frg_bookappointment.getKey_patient_request_zone()).child("Doctor").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class);
-                if(!value.equals("null"))
+                if(dataSnapshot.exists())
                 {
-                    //distance();
-                    myRef.child("loglat_current").addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            location_des = dataSnapshot.getValue(Location_cr.class);
-                            if(location_des.getMobile().equals(value))
-                            {
-                                sendRequest(Main_Screen_Acitivity.getPicker_Lat() + "," + Main_Screen_Acitivity.getPicker_Log(), location_des.getLat() + "," + location_des.getLog());
-                                Log.i("request",lat_cr_user+ "," +log_cr_user);
-                                Log.i("pos_patient",location_des.getLat() + "," + location_des.getLog());
-                                //Toast.makeText(this, route.toString(), Toast.LENGTH_SHORT).show();
+                    String value = dataSnapshot.getValue(String.class);
+                    if (!value.equals("null")) {
+                        //distance();
+                        myRef.child("loglat_current").addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                location_des = dataSnapshot.getValue(Location_cr.class);
+                                if (location_des.getMobile().equals(value)) {
+
+                                    sendRequest(Main_Screen_Acitivity.getPicker_Lat() + "," + Main_Screen_Acitivity.getPicker_Log(), location_des.getLat() + "," + location_des.getLog());
+
+                                    Log.i("request", lat_cr_user + "," + log_cr_user);
+                                    Log.i("pos_patient", location_des.getLat() + "," + location_des.getLog());
+                                    //Toast.makeText(this, route.toString(), Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
             }
 
@@ -194,40 +210,95 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
 
             }
         });
-        btnFindPath.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+
+        CountDownTimer yourCountDownTimer = new CountDownTimer(60000, 1000) {                     //geriye sayma
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                    myRef.child("request_zone").child(screen.getPatient().getPhone()).child(Frg_bookappointment.getKey_patient_request_zone()).setValue(null);
+                    for(String k:send_for_doctor)
+                    {
+                        myRef.child("Doctor").child(k).child("type").setValue("waiting");
+                    }
+
+                    Effectstype effect;
+                    NiftyDialogBuilder dialogBuilder=NiftyDialogBuilder.getInstance(Realtime_Location_Map_Activity.this);
+                    effect = Effectstype.RotateBottom;
+                    dialogBuilder
+                            .withTitle("SORRY")                                  //.withTitle(null)  no title
+                            .withTitleColor("#FFFFFF")                                  //def
+                            .withDividerColor("#11000000")                              //def
+                            .withMessage("\nWe did not find the sutable doctor for you.  \nPlease try again !")                     //.withMessage(null)  no Msg
+                            .withMessageColor("#FFFFFFFF")                              //def  | withMessageColor(int resid)
+                            .withDialogColor("#FFE74C3C")                               //def  | withDialogColor(int resid)                               //def
+                            //.withIcon(getResources().getDrawable(R.drawable.doctor))
+                            .isCancelableOnTouchOutside(true)                           //def    | isCancelable(true)
+                            .withDuration(700)                                          //def
+                            .withEffect(effect)                                         //def Effectstype.Slidetop
+                            .withButton1Text("OK")                                      //def gone
+                           // .withButton2Text("Cancel")                                  //def gone
+                            //.setCustomView(R.layout.custom_view,v.getContext())         //.setCustomView(View or ResId,context)
+                            .setButton1Click(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    finish();
+                                    dialogBuilder.dismiss();
+                                }
+                            })
+                            .setButton2Click(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            })
+                            .show();
+                }
 
             }
-        });
-        //loadingMarkernear();
+        }.start();
+    }
+
+    public String getLocationName(double lattitude, double longitude) {
+        String cityName = "Not Found";
+        Geocoder gcd = new Geocoder(this, Locale.getDefault());
+        Main_Screen_Acitivity.setPicker_Lat(lattitude);
+        Main_Screen_Acitivity.setPicker_Log(longitude);
+        try {
+            List<Address> addresses = gcd.getFromLocation(lattitude, longitude,
+                    10);
+
+            cityName = addresses.get(0).getAddressLine(0);
+            Log.d("ADD",cityName);
+            if(cityName == null)
+            {
+                cityName = "Not Found";
+            }
+            // addresses.get(0).getFeatureName() + ", " + addresses.get(0).getLocality() +", " + addresses.get(0).getAdminArea() + ", " + addresses.get(0).getCountryName();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return cityName;
+
     }
 
 
-
-    public void loadingMarkernear(){
-
-
-        //Location_cr location1 = new Location_cr(10.357264,106.223163,"diem2","ben tre");
-        //  Location_cr location2 = new Location_cr(10.331439,106.037153,"diem1","ca mau");
-        //  locations.add(location1);
-        // locations.add(location2);
-        //ArrayList<LatLng> latLngArrayList = new ArrayList<>();
-    }
-
-    public boolean checkCopy(String newphone)
-    {
-        if(locations.size() > 0 )
-        {
-            for(Location_cr location_cr:locations){
-                if(location_cr.getMobile().equals(newphone))
-                {
+    public boolean checkCopy(String newphone) {
+        if (locations.size() > 0) {
+            for (Location_cr location_cr : locations) {
+                if (location_cr.getMobile().equals(newphone)) {
                     return false;
                 }
             }
         }
         return true;
     }
+
     public void distance() {
         //loadingMarkernear();
 
@@ -236,7 +307,7 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
         int smallest = -1;
         for (int i = 0; i < locations.size(); i++) {
             float[] results = new float[3];
-            Location.distanceBetween(10.8556827, 106.760839,locations.get(i).getLat(), locations.get(i).getLog(), results);
+            Location.distanceBetween(10.8556827, 106.760839, locations.get(i).getLat(), locations.get(i).getLog(), results);
             if (smallestDistance == -1 || results[0] < smallestDistance) {
                 smallestDistance = results[0];
                 smallest = i;
@@ -246,7 +317,7 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
             arrayList.add((int) results[0]);
         }
         //Log.i("checkact-latlog", lat+ "," + log);
-       // sendRequest(10.8556827 + "," +106.760839, locations.get(smallest).getLat() + "," + locations.get(smallest).getLog());
+        // sendRequest(10.8556827 + "," +106.760839, locations.get(smallest).getLat() + "," + locations.get(smallest).getLog());
 
     }
 
@@ -257,7 +328,7 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
 
         String origin = latlog_begin;
         String destination = latlog_end;
-        Toast.makeText(this,latlog_begin+","+ latlog_end, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, latlog_begin + "," + latlog_end, Toast.LENGTH_SHORT).show();
         if (origin.isEmpty()) {
             Toast.makeText(this, "Please enter origin address!", Toast.LENGTH_SHORT).show();
             return;
@@ -312,7 +383,7 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
         }
 
         if (polylinePaths != null) {
-            for (Polyline polyline:polylinePaths ) {
+            for (Polyline polyline : polylinePaths) {
                 polyline.remove();
             }
         }
@@ -347,7 +418,8 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
                 polylineOptions.add(route.points.get(i));
 
             polylinePaths.add(mMap.addPolyline(polylineOptions));
-
+            etOrigin.setText(getLocationName(Main_Screen_Acitivity.getPicker_Lat(),Main_Screen_Acitivity.getPicker_Log()));
+            etDestination.setText(getLocationName(location_des.getLat(), location_des.getLog()));
         }
     }
 }

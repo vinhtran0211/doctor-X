@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <uses-feature
         android:name="android.hardware.location"
@@ -30,14 +31,15 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".SignUp_Activity"
-            android:theme="@style/AppTheme.Dark"></activity>
-        <activity android:name=".Main_doctor"></activity>
-        <activity android:name=".Main_Patient"></activity>
-        <activity android:name=".Testmap"></activity>
+            android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".Main_doctor" />
+        <activity android:name=".Main_Patient" />
+        <activity android:name=".Testmap" />
         <activity
             android:name=".Main_Screen_Acitivity"
-            android:exported="true"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme.DarkHAB"
+            android:exported="true"/>
+        <service android:name=".service"/>
         <activity
             android:name=".screen"
             android:theme="@style/AppTheme.Dark">
@@ -47,15 +49,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
+            android:name="com.google.android.geo.API_KEY"
             android:value="@string/key_API_map" />
 
-        <activity android:name=".Realtime_Location_Map_Activity"></activity>
+        <activity android:name=".Realtime_Location_Map_Activity" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+
+        <activity
+            android:name=".Doctor_Realtime_Map_Activity"
+            android:label="@string/title_activity_doctor__realtime__map_"></activity>
     </application>
 
 </manifest>
