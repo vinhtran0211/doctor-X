@@ -37,7 +37,6 @@
         <activity android:name=".Testmap" />
         <activity
             android:name=".Main_Screen_Acitivity"
-            android:theme="@style/AppTheme.DarkHAB"
             android:exported="true"/>
         <service android:name=".service"/>
         <activity

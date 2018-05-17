@@ -98,7 +98,9 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
                     if (location_cr.getMobile().equals(doctor.getPhone())) {
                         if (doctor.getSpecialist().equals(Frg_bookappointment.getSpecialist())) {
                             send_for_doctor.add(key);
-                            myRef.child("doctor").child(key).child("type").setValue(Frg_bookappointment.getKey_patient_request_zone()+"_"+Main_Screen_Acitivity.getPatient().getPhone());
+                            String query= Frg_bookappointment.getKey_patient_request_zone()+"_"+Main_Screen_Acitivity.getPatient().getPhone()+"_"+Main_Screen_Acitivity.getPatient().getName()+"_"+Main_Screen_Acitivity.getKey()+"_"+getLocationName(Main_Screen_Acitivity.getPicker_Lat(),Main_Screen_Acitivity.getPicker_Log());
+                            Log.i("query",query);
+                            myRef.child("doctor").child(key).child("type").setValue(query);
                             //2 LA trang thai requested
                         }
                     }
@@ -159,7 +161,7 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
         Log.i("Showmarker", locations.size() + "");
         progressDialog = ProgressDialog.show(this, "Please wait.",
                 "Finding Doctor for you..!", true);
-        myRef.child("request_zone").child(screen.getPatient().getPhone()).child(Frg_bookappointment.getKey_patient_request_zone()).child("Doctor").addValueEventListener(new ValueEventListener() {
+        myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(Frg_bookappointment.getKey_patient_request_zone()).child("Doctor").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists())
@@ -220,10 +222,10 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
             public void onFinish() {
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
-                    myRef.child("request_zone").child(screen.getPatient().getPhone()).child(Frg_bookappointment.getKey_patient_request_zone()).setValue(null);
+                    myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(Frg_bookappointment.getKey_patient_request_zone()).setValue(null);
                     for(String k:send_for_doctor)
                     {
-                        myRef.child("Doctor").child(k).child("type").setValue("waiting");
+                        myRef.child("doctor").child(k).child("type").setValue("waiting");
                     }
 
                     Effectstype effect;

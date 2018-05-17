@@ -4,9 +4,13 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,6 +22,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -114,14 +119,14 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
 
     public static Doctor_class doctor = new Doctor_class();
 
-    public static String key;
+    public static String key = "";
 
     public static String getKey() {
         return key;
     }
 
-    public static void setKey(String key) {
-        screen.key = key;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     private Toolbar mToolbar;
@@ -215,43 +220,62 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
                     if(dataSnapshot.exists())
                     {
                         Log.d("typecheck",dataSnapshot.getValue(String.class));
-                        if(dataSnapshot.getValue(String.class).equals("2"))
-                        {
-                            Effectstype effect;
-                            NiftyDialogBuilder dialogBuilder=NiftyDialogBuilder.getInstance(Main_Screen_Acitivity.this);
-                            effect = Effectstype.Shake;
-                            dialogBuilder
-                                    .withTitle("Nguyen Van An")                                  //.withTitle(null)  no title
-                                    .withTitleColor("#FFFFFF")                                  //def
-                                    .withDividerColor("#11000000")                              //def
-                                    .withMessage("You have a request ! \nDetail infor: Nguyen Van A \nLocation :")                     //.withMessage(null)  no Msg
-                                    .withMessageColor("#FFFFFFFF")                              //def  | withMessageColor(int resid)
-                                    .withDialogColor("#FFE74C3C")                               //def  | withDialogColor(int resid)                               //def
-                                    .withIcon(getResources().getDrawable(R.drawable.doctor))
-                                    .isCancelableOnTouchOutside(true)                           //def    | isCancelable(true)
-                                    .withDuration(700)                                          //def
-                                    .withEffect(effect)                                         //def Effectstype.Slidetop
-                                    .withButton1Text("OK")                                      //def gone
-                                    .withButton2Text("Cancel")                                  //def gone
-                                    //.setCustomView(R.layout.custom_view,v.getContext())         //.setCustomView(View or ResId,context)
-                                    .setButton1Click(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Intent i = new Intent(Main_Screen_Acitivity.this,Doctor_Realtime_Map_Activity.class);
-                                            i.putExtra("type","forapatient");
-                                            startActivity(i);
-                                            Toast.makeText(v.getContext(), "i'm btn1", Toast.LENGTH_SHORT).show();
-                                        }
-                                    })
-                                    .setButton2Click(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Toast.makeText(v.getContext(), "i'm btn2", Toast.LENGTH_SHORT).show();
-                                        }
-                                    })
-                                    .show();
+                        NiftyDialogBuilder dialogBuilder=NiftyDialogBuilder.getInstance(Main_Screen_Acitivity.this);
 
-                            //TODO
+                        if(!dataSnapshot.getValue(String.class).equals("waiting"))
+                        {
+                            String key  = dataSnapshot.getValue(String.class).split("_")[3].trim();
+                            myRef.child("patient").child(key).child("avatar").addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot childsnapshot) {
+//TODO
+                                    Effectstype effect;
+                                    effect = Effectstype.Shake;
+                                    Drawable d = new BitmapDrawable(getResources(), convertoBitmap(childsnapshot.getValue(String.class)));
+                                    dialogBuilder
+                                            .withTitle("New Suggestion")                                  //.withTitle(null)  no title
+                                            .withTitleColor("#FFFFFF")                                  //def
+                                            .withDividerColor("#11000000")                              //def
+                                            .withMessage("nDetail infor: \n Name: "+dataSnapshot.getValue(String.class).split("_")[2].trim()+"\nTime :"+dataSnapshot.getValue(String.class).split("_")[0].trim()+"\n Location: "+dataSnapshot.getValue(String.class).split("_")[4].trim())                     //.withMessage(null)  no Msg
+                                            .withMessageColor("#FFFFFFFF")                              //def  | withMessageColor(int resid)
+                                            .withDialogColor("#FFE74C3C")                               //def  | withDialogColor(int resid)                               //def
+                                            .withIcon(d)
+                                            .isCancelableOnTouchOutside(true)                           //def    | isCancelable(true)
+                                            .withDuration(700)                                          //def
+                                            .withEffect(effect)                                         //def Effectstype.Slidetop
+                                            .withButton1Text("OK")                                      //def gone
+                                            .withButton2Text("Cancel") //def gone
+                                            //.setCustomView(R.layout.custom_view,v.getContext())         //.setCustomView(View or ResId,context)
+                                            .setButton1Click(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    Intent i = new Intent(Main_Screen_Acitivity.this,Doctor_Realtime_Map_Activity.class);
+                                                    i.putExtra("type","forapatient");
+                                                    startActivity(i);
+                                                    Toast.makeText(v.getContext(), "i'm btn1", Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .setButton2Click(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    Toast.makeText(v.getContext(), "i'm btn2", Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .show();
+
+                                    //TODO
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+                        }
+                        else{
+                            dialogBuilder.dismiss();
                         }
                     }
                 }
@@ -262,6 +286,13 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
                 }
             });
         }
+    }
+
+
+    public Bitmap convertoBitmap(String string)
+    {
+        byte[] decodedString = Base64.decode(string,Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
     }
 
     private void changeFragment(Fragment fragment, boolean needToAddBackstack) {
@@ -280,14 +311,14 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
             setDoctor(screen.getDoctor());
             setPatient(screen.getPatient());
 
-            Toast.makeText(contextOfApplication, "Set up success with data screen \nKey: "+screen.getKey()+"\nDoctor: "+getDoctor().getName()+"\nPatient: "+getPatient().getName(), Toast.LENGTH_LONG).show();
+            Toast.makeText(contextOfApplication, "Set up success with data screen \nKey: "+getKey()+"\nDoctor: "+getDoctor().getName()+"\nPatient: "+getPatient().getName(), Toast.LENGTH_LONG).show();
         }
         else if(Login_Activity.getKey() != null){
             setKey(Login_Activity.getKey());
             setDoctor(Login_Activity.getDoctor());
             setPatient(Login_Activity.getPatient());
 
-            Toast.makeText(contextOfApplication, "Set up success with data Login_Activity \nKey: "+Login_Activity.getKey()+"\nDoctor: "+getDoctor().getName()+"\nPatient: "+getPatient().getName(), Toast.LENGTH_LONG).show();
+            Toast.makeText(contextOfApplication, "Set up success with data Login_Activity \nKey: "+getKey()+"\nDoctor: "+getDoctor().getName()+"\nPatient: "+getPatient().getName(), Toast.LENGTH_LONG).show();
         }
     }
 
