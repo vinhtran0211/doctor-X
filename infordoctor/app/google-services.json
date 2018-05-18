@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "1051931039346",
+    "firebase_url": "https://doctorxv12-c6efa.firebaseio.com",
+    "project_id": "doctorxv12-c6efa",
+    "storage_bucket": "doctorxv12-c6efa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051931039346:android:ad27d2d55a8d7170",
+        "android_client_info": {
+          "package_name": "com.vinh.doctor_x"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1051931039346-gctsgt880m3gabc6mjg417bldmtnklgq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vinh.doctor_x",
+            "certificate_hash": "ea1a37cac5f0d6893996aa08d760e3a456e40892"
+          }
+        },
+        {
+          "client_id": "1051931039346-qg70k84k99jqslg0r38agn1omtja51gr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vinh.doctor_x",
+            "certificate_hash": "7761b4dff5a7897375650e3d361f6bf4366802b0"
+          }
+        },
+        {
+          "client_id": "1051931039346-cutl720jarud9qa6hra3pt8gn7be85co.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2ugaZRQ6sZiPvmNRET7pnDcfglZsrIZo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051931039346-cutl720jarud9qa6hra3pt8gn7be85co.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051931039346:android:ce28228de067f89c",
+        "android_client_info": {
+          "package_name": "com.vinh.infordoctor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1051931039346-up2mkdhl38c9ni89i58nudeckci82u1s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vinh.infordoctor",
+            "certificate_hash": "ea1a37cac5f0d6893996aa08d760e3a456e40892"
+          }
+        },
+        {
+          "client_id": "1051931039346-cutl720jarud9qa6hra3pt8gn7be85co.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2ugaZRQ6sZiPvmNRET7pnDcfglZsrIZo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051931039346-cutl720jarud9qa6hra3pt8gn7be85co.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
