@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.vinh.doctor_x.Doctor_Realtime_Map_Activity;
 import com.vinh.doctor_x.Login_Activity;
 import com.vinh.doctor_x.R;
 
@@ -41,15 +42,13 @@ public class Frg_main_doctor extends Fragment {
         btn_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
+                //fragmentManager = getActivity().getSupportFragmentManager();
+                //fragmentTransaction = fragmentManager.beginTransaction();
 
 
-                Frg_Map_Doctor fragment = new Frg_Map_Doctor();
-                fragmentTransaction.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out);
-                fragmentTransaction.replace(R.id.frg_frisetup, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                Intent i = new Intent(getActivity(),Doctor_Realtime_Map_Activity.class);
+                i.putExtra("type","showlist");
+                startActivity(i);
             }
         });
 

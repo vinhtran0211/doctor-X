@@ -56,8 +56,8 @@ public class SignUp_Activity extends AppCompatActivity {
         rdb_cpatient = (RadioButton)findViewById(R.id.rdb_cpatient);
         rdb_cdoctor = (RadioButton)findViewById(R.id.rdb_cdoctor);
 
-
-
+        rdb_cdoctor.setChecked(false);
+        rdb_cpatient.setChecked(false);
         rdg_chooseType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {

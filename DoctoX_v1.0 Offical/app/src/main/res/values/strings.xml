@@ -23,5 +23,6 @@
     <string name="addressLine">Address Line : </string>
 
     <string name="error_location_provider">error location provider</string>
+    <string name="title_activity_doctor__realtime__map_">Map</string>
 
 </resources>

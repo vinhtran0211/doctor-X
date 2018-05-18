@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "735079386238",
-    "firebase_url": "https://doctor-x-3c02d.firebaseio.com",
-    "project_id": "doctor-x-3c02d",
-    "storage_bucket": "doctor-x-3c02d.appspot.com"
+    "project_number": "147399527935",
+    "firebase_url": "https://doctorxv12.firebaseio.com",
+    "project_id": "doctorxv12",
+    "storage_bucket": "doctorxv12.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:735079386238:android:ad27d2d55a8d7170",
+        "mobilesdk_app_id": "1:147399527935:android:ad27d2d55a8d7170",
         "android_client_info": {
           "package_name": "com.vinh.doctor_x"
         }
       },
       "oauth_client": [
         {
-          "client_id": "735079386238-skl6sq7bb0o52k4944nb8452mr5ful59.apps.googleusercontent.com",
+          "client_id": "147399527935-bj3s4m0qkikk1kqv0ere38tb0kg7lduu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.vinh.doctor_x",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "735079386238-1if8qtd4ik9ttguceicarn8mrao6383k.apps.googleusercontent.com",
+          "client_id": "147399527935-70bqsdlijn7gjffvc1tg7gtmuoka0phm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCuuTis2kRoli4cjeYn1mL9QGhaoL0JApI"
+          "current_key": "AIzaSyB47d9-IYjAG4ZiDAsAPrJyGBVLih5H9ag"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "735079386238-1if8qtd4ik9ttguceicarn8mrao6383k.apps.googleusercontent.com",
+              "client_id": "147399527935-70bqsdlijn7gjffvc1tg7gtmuoka0phm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

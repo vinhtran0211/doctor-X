@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -65,14 +66,28 @@ public class screen extends AppCompatActivity {
 
     public static Doctor_class doctor = new Doctor_class();
 
+    public static String key = null;
 
+    public static String getKey() {
+        return key;
+    }
+
+    public static void setKey(String key) {
+        screen.key = key;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+        MultiDex.install(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen);
         checkLocationPermission();
-
+        Toast.makeText(this, "Service is started", Toast.LENGTH_SHORT).show();
         fbAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
@@ -94,6 +109,7 @@ public class screen extends AppCompatActivity {
                         check();
                         Log.d("ab", aa + "");
                     } else {
+
                         Intent intent_next = new Intent(screen.this, Login_Activity.class);
                         startActivity(intent_next);
                     }
@@ -133,7 +149,7 @@ public class screen extends AppCompatActivity {
 //    }
 
     public void check() {
-        String key = fbAuth.getCurrentUser().getUid();
+        key = fbAuth.getCurrentUser().getUid();
         reference.child("patient").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -145,8 +161,8 @@ public class screen extends AppCompatActivity {
                     bundle.putInt("type",1);
                     intent.putExtra("gettype",bundle);
                     startActivity(intent);
-
                     Log.d("ab", aa + " ");
+
                 }
             }
 
@@ -160,6 +176,7 @@ public class screen extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    setKey(fbAuth.getCurrentUser().getUid());
                     setDoctor(dataSnapshot.getValue(Doctor_class.class));
                     Intent intent = new Intent(screen.this, Main_Screen_Acitivity.class);
                     Bundle bundle = new Bundle();
