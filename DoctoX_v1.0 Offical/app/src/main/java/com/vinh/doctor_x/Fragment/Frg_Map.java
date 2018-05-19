@@ -598,6 +598,7 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
                                 }
                             });
                         }
+                        Main_Screen_Acitivity.setCheckBtnSearch(false);
                         swipe_1_up = !swipe_1_up;
                     } else {
                         if (swipe_1_up == false) {
@@ -697,13 +698,7 @@ public class Frg_Map extends Fragment implements OnMapReadyCallback, LocationLis
                 txt_getlocationcurrent.setText(getLocationName(location.getLatitude(), location.getLongitude()));
                 //Place current location marker
                 BitmapDescriptor icon;
-                if(Main_Screen_Acitivity.getDoctor().getPhone() == null)
-                {
-                     icon = BitmapDescriptorFactory.fromResource(R.drawable.patient_marker);
-                }
-                else {
-                     icon = BitmapDescriptorFactory.fromResource(R.drawable.markerdoctor);
-                }
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.patient_marker);
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 //markerOptions = new MarkerOptions();
                 MarkerOptions markerOptions = new MarkerOptions();

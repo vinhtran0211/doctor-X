@@ -2,12 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vinh.doctor_x">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
 
     <uses-feature
         android:name="android.hardware.location"
@@ -37,8 +44,10 @@
         <activity android:name=".Testmap" />
         <activity
             android:name=".Main_Screen_Acitivity"
-            android:exported="true"/>
-        <service android:name=".service"/>
+            android:exported="true" />
+
+        <service android:name=".service" />
+
         <activity
             android:name=".screen"
             android:theme="@style/AppTheme.Dark">
@@ -48,6 +57,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -67,7 +77,26 @@
 
         <activity
             android:name=".Doctor_Realtime_Map_Activity"
-            android:label="@string/title_activity_doctor__realtime__map_"></activity>
+            android:allowBackup="true"
+            android:label="@string/title_activity_doctor__realtime__map_"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".Doctor_History_Acitivity"
+            android:theme="@style/AppTheme.DarkHAB" />
+        <activity
+            android:name=".Doctor_Follow_Activity"
+            android:theme="@style/AppTheme.DarkHAB" />
+        <activity android:name=".Patient_Call_Emer_Activity"
+            android:theme="@style/AppTheme.DarkHAB"></activity>
+
+
+        <activity android:name=".Medical.MedicalProblems" />
+        <activity android:name=".Medical.RequiredMedicines" />
+        <activity android:name=".Web.WebsiteView" />
+        <activity android:name=".NearbyLocations.GMap.ListHealthCenters" />
+        <activity
+            android:name=".NearbyLocations.GMap.MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -48,6 +49,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vinh.doctor_x.Fragment.Frg_Map;
 import com.vinh.doctor_x.Fragment.Frg_bookappointment;
+import com.vinh.doctor_x.Fragment.Frg_emer_book_patient;
 import com.vinh.doctor_x.Modules.DirectionFinder;
 import com.vinh.doctor_x.Modules.DirectionFinderListener;
 import com.vinh.doctor_x.Modules.Route;
@@ -74,11 +76,20 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
 
     private String address_cr_user;
     private String request = null;
-
+    private String type = "";
     private List<String> send_for_doctor = new ArrayList<>();
+    View view_shortly_doctor;
+    String keyT = "";
+    boolean isUp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        view_shortly_doctor = findViewById(R.id.detail_sortly_doctor);
+        view_shortly_doctor.setVisibility(View.INVISIBLE);
+        isUp = false;
+
+
         setContentView(R.layout.realtime_location_map_layout);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -88,45 +99,112 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
        // btnFindPath = (Button) findViewById(R.id.btnFindPath);
         etOrigin = (EditText) findViewById(R.id.etOrigin);
         etDestination = (EditText) findViewById(R.id.etDestination);
+        type = getIntent().getStringExtra("type_appoitment");
 
-        myRef.child("doctor").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String key = dataSnapshot.getKey();
-                Doctor_class doctor = dataSnapshot.getValue(Doctor_class.class);
-                for (Location_cr location_cr : locations_nearly) {
-                    if (location_cr.getMobile().equals(doctor.getPhone())) {
-                        if (doctor.getSpecialist().equals(Frg_bookappointment.getSpecialist())) {
+        if(type.equals("normal"))
+        {
+            keyT = Frg_bookappointment.getKey_patient_request_zone();
+        }
+        else{
+            keyT = Frg_emer_book_patient.getKey_patient_request_zone_emer();
+        }
+        if(type.equals("normal"))
+        {
+            keyT = Frg_bookappointment.getKey_patient_request_zone();
+            myRef.child("doctor").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    String key = dataSnapshot.getKey();
+                    Doctor_class doctor = dataSnapshot.getValue(Doctor_class.class);
+                    for (Location_cr location_cr : locations_nearly) {
+                        if (location_cr.getMobile().equals(doctor.getPhone())) {
+                            if (doctor.getSpecialist().equals(Frg_bookappointment.getSpecialist())) {
+                                send_for_doctor.add(key);
+                                String query= Frg_bookappointment.getKey_patient_request_zone()+
+                                        "_"+Main_Screen_Acitivity.getPatient().getPhone()+
+                                        "_"+Main_Screen_Acitivity.getPatient().getName()+
+                                        "_"+Main_Screen_Acitivity.getKey()+
+                                        "_"+getLocationName(Main_Screen_Acitivity.getPicker_Lat(),Main_Screen_Acitivity.getPicker_Log())+
+                                        "_"+Main_Screen_Acitivity.getPicker_Lat()+
+                                        "_"+Main_Screen_Acitivity.getPicker_Log()+"normal";
+                                Log.i("query",query);
+                                myRef.child("doctor").child(key).child("type").setValue(query);
+                                //2 LA trang thai requested
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else if(type.equals("emer"))
+        {
+            keyT = Frg_emer_book_patient.getKey_patient_request_zone_emer();
+            myRef.child("doctor").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    String key = dataSnapshot.getKey();
+                    Doctor_class doctor = dataSnapshot.getValue(Doctor_class.class);
+                    for (Location_cr location_cr : locations_nearly) {
+                        if (location_cr.getMobile().equals(doctor.getPhone())) {
                             send_for_doctor.add(key);
-                            String query= Frg_bookappointment.getKey_patient_request_zone()+"_"+Main_Screen_Acitivity.getPatient().getPhone()+"_"+Main_Screen_Acitivity.getPatient().getName()+"_"+Main_Screen_Acitivity.getKey()+"_"+getLocationName(Main_Screen_Acitivity.getPicker_Lat(),Main_Screen_Acitivity.getPicker_Log());
+                            String query= Frg_emer_book_patient.getKey_patient_request_zone_emer()+
+                                    "_"+Main_Screen_Acitivity.getPatient().getPhone()+
+                                    "_"+Main_Screen_Acitivity.getPatient().getName()+
+                                    "_"+Main_Screen_Acitivity.getKey()+
+                                    "_"+getLocationName(Main_Screen_Acitivity.getPicker_Lat(),Main_Screen_Acitivity.getPicker_Log())+
+                                    "_"+Main_Screen_Acitivity.getPicker_Lat()+
+                                    "_"+Main_Screen_Acitivity.getPicker_Log()+"_"+"emer";
                             Log.i("query",query);
                             myRef.child("doctor").child(key).child("type").setValue(query);
                             //2 LA trang thai requested
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
+                }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+
+
+
         myRef.child("loglat_current").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -161,7 +239,9 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
         Log.i("Showmarker", locations.size() + "");
         progressDialog = ProgressDialog.show(this, "Please wait.",
                 "Finding Doctor for you..!", true);
-        myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(Frg_bookappointment.getKey_patient_request_zone()).child("Doctor").addValueEventListener(new ValueEventListener() {
+
+
+        myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(keyT).child("Doctor").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists())
@@ -222,7 +302,7 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
             public void onFinish() {
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
-                    myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(Frg_bookappointment.getKey_patient_request_zone()).setValue(null);
+                    myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(keyT).setValue(null);
                     for(String k:send_for_doctor)
                     {
                         myRef.child("doctor").child(k).child("type").setValue("waiting");
@@ -367,6 +447,20 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
             return;
         }
         mMap.setMyLocationEnabled(true);
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if (isUp) {
+                    slideDown(view_shortly_doctor);
+                } else {
+                    slideUp(view_shortly_doctor);
+                }
+                isUp = !isUp;
+                return false;
+            }
+        });
+
     }
 
 
@@ -424,6 +518,31 @@ public class Realtime_Location_Map_Activity extends FragmentActivity implements 
             etDestination.setText(getLocationName(location_des.getLat(), location_des.getLog()));
         }
     }
+
+    public void slideUp(View view) {
+        view.setVisibility(View.VISIBLE);
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                view.getHeight(),  // fromYDelta
+                0);                // toYDelta
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+    }
+
+    // slide the view from its current position to below itself
+    public void slideDown(View view) {
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                0,                 // fromYDelta
+                view.getHeight()); // toYDelta
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+    }
+
 }
 
 ///Realtime_Location_Map_Activity   setContentView(R.layout.realtime_location_map_layout);

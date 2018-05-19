@@ -300,7 +300,7 @@ public class Frg_fillinfro_doctor extends Fragment implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 String key =  mAuth.getCurrentUser().getUid();
-                Doctor_class drv =new Doctor_class();
+                Doctor_class drv = new Doctor_class();
                 drv.setAvatar(convertToBase64(thumbnail));
                 drv.setName(_nameText.getText().toString());
                 drv.setType("waiting");
@@ -314,6 +314,7 @@ public class Frg_fillinfro_doctor extends Fragment implements OnMapReadyCallback
                 drv.setGender(gender);
                 drv.setLat(getLat);
                 drv.setLog(getLog);
+                drv.setRating(0.0);
                 reference.child("doctor").child(key).setValue(drv);
 
                 //reference.child("loglat_current").child(key).setValue(location_cr);

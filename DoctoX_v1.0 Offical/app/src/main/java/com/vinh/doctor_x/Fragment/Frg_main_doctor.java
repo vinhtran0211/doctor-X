@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.vinh.doctor_x.Doctor_Follow_Activity;
+import com.vinh.doctor_x.Doctor_History_Acitivity;
 import com.vinh.doctor_x.Doctor_Realtime_Map_Activity;
 import com.vinh.doctor_x.Login_Activity;
 import com.vinh.doctor_x.R;
@@ -38,7 +40,8 @@ public class Frg_main_doctor extends Fragment {
         btn_logout = (ImageButton)view.findViewById(R.id.btn_logout_md);
         mAuth = FirebaseAuth.getInstance();
         btn_appointment = (ImageButton)view.findViewById(R.id.btn_getappointment);
-
+        btn_mypatient = (ImageButton)view.findViewById(R.id.btn_patientofdoctor);
+        btn_history = (ImageButton)view.findViewById(R.id.btn_historyofdoctor);
         btn_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,6 +51,14 @@ public class Frg_main_doctor extends Fragment {
 
                 Intent i = new Intent(getActivity(),Doctor_Realtime_Map_Activity.class);
                 i.putExtra("type","showlist");
+                startActivity(i);
+            }
+        });
+
+        btn_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(),Doctor_History_Acitivity.class);
                 startActivity(i);
             }
         });
@@ -63,7 +74,18 @@ public class Frg_main_doctor extends Fragment {
 
             }
         });
+
+        btn_mypatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(),Doctor_Follow_Activity.class);
+                startActivity(i);
+            }
+        });
+
         return view;
+
+
     }
 
 }

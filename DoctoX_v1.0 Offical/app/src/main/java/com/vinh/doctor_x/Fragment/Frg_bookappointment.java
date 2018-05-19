@@ -331,6 +331,7 @@ public class Frg_bookappointment extends Fragment {
                 myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(key).child("WhoCome").setValue("Doctor");
                 myRef.child("request_zone").child(Main_Screen_Acitivity.getPatient().getPhone()).child(key).child("Type").setValue("Appointment Normal");
                 Intent i = new Intent(getActivity(), Realtime_Location_Map_Activity.class);
+                i.putExtra("type_appoitment", "normal");
                 startActivity(i);
                 ((Activity) getActivity()).overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
             }

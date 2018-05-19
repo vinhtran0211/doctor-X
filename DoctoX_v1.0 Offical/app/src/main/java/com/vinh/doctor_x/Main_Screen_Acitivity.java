@@ -45,6 +45,7 @@ import com.vinh.doctor_x.Fragment.Frg_Map;
 import com.vinh.doctor_x.Fragment.Frg_bookappointment;
 import com.vinh.doctor_x.Fragment.Frg_main_doctor;
 import com.vinh.doctor_x.Fragment.Frg_main_patient;
+import com.vinh.doctor_x.User.Appointment_class;
 import com.vinh.doctor_x.User.Doctor_class;
 import com.vinh.doctor_x.User.Location_cr;
 import com.vinh.doctor_x.User.Patient_class;
@@ -98,6 +99,15 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
         Main_Screen_Acitivity.picker_Log = picker_Log;
     }
 
+    public static String lat_log_emer = "";
+
+    public static String getLat_log_emer() {
+        return lat_log_emer;
+    }
+
+    public static void setLat_log_emer(String lat_log_emer) {
+        Main_Screen_Acitivity.lat_log_emer = lat_log_emer;
+    }
 
     public static Patient_class patient_class = new Patient_class();
 
@@ -212,9 +222,9 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
 
         mFragmentManager = getSupportFragmentManager();
 
-        if(screen.getKey() != null && getDoctor().getPhone() != null)
+        if(Main_Screen_Acitivity.getDoctor().getPhone() != null)
         {
-            myRef.child("doctor").child(screen.getKey()).child("type").addValueEventListener(new ValueEventListener() {
+            myRef.child("doctor").child(getKey()).child("type").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists())
@@ -224,53 +234,64 @@ public class Main_Screen_Acitivity extends AppCompatActivity  implements Navigat
 
                         if(!dataSnapshot.getValue(String.class).equals("waiting"))
                         {
+
                             String key  = dataSnapshot.getValue(String.class).split("_")[3].trim();
-                            myRef.child("patient").child(key).child("avatar").addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot childsnapshot) {
-//TODO
-                                    Effectstype effect;
-                                    effect = Effectstype.Shake;
-                                    Drawable d = new BitmapDrawable(getResources(), convertoBitmap(childsnapshot.getValue(String.class)));
-                                    dialogBuilder
-                                            .withTitle("New Suggestion")                                  //.withTitle(null)  no title
-                                            .withTitleColor("#FFFFFF")                                  //def
-                                            .withDividerColor("#11000000")                              //def
-                                            .withMessage("nDetail infor: \n Name: "+dataSnapshot.getValue(String.class).split("_")[2].trim()+"\nTime :"+dataSnapshot.getValue(String.class).split("_")[0].trim()+"\n Location: "+dataSnapshot.getValue(String.class).split("_")[4].trim())                     //.withMessage(null)  no Msg
-                                            .withMessageColor("#FFFFFFFF")                              //def  | withMessageColor(int resid)
-                                            .withDialogColor("#FFE74C3C")                               //def  | withDialogColor(int resid)                               //def
-                                            .withIcon(d)
-                                            .isCancelableOnTouchOutside(true)                           //def    | isCancelable(true)
-                                            .withDuration(700)                                          //def
-                                            .withEffect(effect)                                         //def Effectstype.Slidetop
-                                            .withButton1Text("OK")                                      //def gone
-                                            .withButton2Text("Cancel") //def gone
-                                            //.setCustomView(R.layout.custom_view,v.getContext())         //.setCustomView(View or ResId,context)
-                                            .setButton1Click(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    Intent i = new Intent(Main_Screen_Acitivity.this,Doctor_Realtime_Map_Activity.class);
-                                                    i.putExtra("type","forapatient");
-                                                    startActivity(i);
-                                                    Toast.makeText(v.getContext(), "i'm btn1", Toast.LENGTH_SHORT).show();
-                                                }
-                                            })
-                                            .setButton2Click(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    Toast.makeText(v.getContext(), "i'm btn2", Toast.LENGTH_SHORT).show();
-                                                }
-                                            })
-                                            .show();
+                            if(dataSnapshot.getValue(String.class).split("_")[7].trim().equals("normal"))
+                            {
+                                myRef.child("patient").child(key).child("avatar").addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot childsnapshot) {
+                                        Effectstype effect;
+                                        effect = Effectstype.Shake;
+                                        Drawable d = new BitmapDrawable(getResources(), convertoBitmap(childsnapshot.getValue(String.class)));
+                                        dialogBuilder
+                                                .withTitle("New Suggestion")                                  //.withTitle(null)  no title
+                                                .withTitleColor("#FFFFFF")                                  //def
+                                                .withDividerColor("#11000000")                              //def
+                                                .withMessage("Detail infor: \nName: "+dataSnapshot.getValue(String.class).split("_")[2].trim()+"\nTime :"+dataSnapshot.getValue(String.class).split("_")[0].trim()+"\nLocation: "+dataSnapshot.getValue(String.class).split("_")[4].trim())                     //.withMessage(null)  no Msg
+                                                .withMessageColor("#FFFFFFFF")                              //def  | withMessageColor(int resid)
+                                                .withDialogColor("#FFE74C3C")                               //def  | withDialogColor(int resid)                               //def
+                                                .withIcon(d)
+                                                .isCancelableOnTouchOutside(true)                           //def    | isCancelable(true)
+                                                .withDuration(700)                                          //def
+                                                .withEffect(effect)                                         //def Effectstype.Slidetop
+                                                .withButton1Text("Ok")                                      //def gone
+                                                .withButton2Text("Cancel") //def gone
+                                                //.setCustomView(R.layout.custom_view,v.getContext())         //.setCustomView(View or ResId,context)
+                                                .setButton1Click(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        //Intent i = new Intent(Main_Screen_Acitivity.this,Doctor_Realtime_Map_Activity.class);
+                                                        //i.putExtra("type","forapatient");
+                                                        //startActivity(i);
+                                                        //Toast.makeText(v.getContext(), "i'm btn1", Toast.LENGTH_SHORT).show();
+                                                        Appointment_class appointment_class = new Appointment_class(dataSnapshot.getValue(String.class).split("_")[2].trim(),dataSnapshot.getValue(String.class).split("_")[1].trim(),dataSnapshot.getValue(String.class).split("_")[0].trim(),dataSnapshot.getValue(String.class).split("_")[4].trim(),"0",childsnapshot.getValue(String.class) ,Double.parseDouble(dataSnapshot.getValue(String.class).split("_")[5].trim()),Double.parseDouble(dataSnapshot.getValue(String.class).split("_")[6].trim()),0.0);
+                                                        myRef.child("doctor_list_appo").child(getKey()).child(dataSnapshot.getValue(String.class).split("_")[0].trim()).setValue(appointment_class);
+                                                        dialogBuilder.dismiss();
+                                                    }
+                                                })
+                                                .setButton2Click(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        Toast.makeText(v.getContext(), "i'm btn2", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                })
+                                                .show();
 
-                                    //TODO
-                                }
+                                        //TODO
+                                    }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                }
-                            });
+                                    }
+                                });
+                            }
+                            else if((dataSnapshot.getValue(String.class).split("_")[7].trim().equals("emer")))
+                            {
+
+                            }
+
 
 
                         }

@@ -1,12 +1,17 @@
 package com.vinh.doctor_x.User;
 
-/**
- * Created by Vinh on 10-Apr-18.
- */
-
 public class Doctor_class {
     private String name,avatar,type,address,email,phone,DOB,workat,workinghour,code,specialist;
     Double lat,log;
+    Double rating;
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
 
     public Double getLat() {
         return lat;
